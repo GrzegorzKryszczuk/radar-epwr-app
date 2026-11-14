@@ -1,0 +1,16 @@
+{
+  "name": "Radar EPWR",
+  "short_name": "Radar EPWR",
+  "description": "Samoloty nad Wrocławiem na żywo, tablica lotów, alarmy i zdarzenia na lotnisku EPWR, nasłuch ATC i pogoda.",
+  "lang": "pl",
+  "start_url": "/app/#radar",
+  "scope": "/app/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "icons": [
+    { "src": "/app/ikona-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/app/ikona-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,23 @@
+Radar EPWR – licencja na kod źródłowy i aplikację
+Copyright (c) 2026 Grzegorz Kryszczuk. Wszelkie prawa zastrzeżone.
+
+1. Użytkowanie. Każdy może bezpłatnie pobrać, zainstalować i używać aplikacji „Radar EPWR”
+   (plik APK/AAB z sekcji Releases, ze strony radar-epwr.pl lub ze sklepu Google Play) do własnych,
+   niekomercyjnych celów.
+2. Wgląd w kod. Kod źródłowy w tym repozytorium jest publiczny, aby każdy mógł sprawdzić, jak działa
+   aplikacja i jakie dane przetwarza. Wolno go czytać, uruchamiać lokalnie w celach nauki oraz zgłaszać
+   uwagi i poprawki (Issues, Pull Requests). Zgłaszając poprawkę, udzielasz autorowi prawa do jej
+   wykorzystania w projekcie.
+3. Zakazy bez pisemnej zgody autora: kopiowanie, modyfikowanie i rozpowszechnianie kodu lub aplikacji
+   (także w zmienionej postaci i pod inną nazwą), publikowanie w sklepach z aplikacjami, użycie
+   komercyjne, usuwanie informacji o autorze oraz używanie nazwy „Radar EPWR”, logo i grafik.
+   Pliki APK/AAB wolno przekazywać dalej wyłącznie w niezmienionej postaci i z linkiem do tego repozytorium.
+4. Dane lotnicze i usługi zewnętrzne (ADS-B, METAR, Firebase i inne) podlegają własnym licencjom
+   i regulaminom ich dostawców; ta licencja ich nie obejmuje.
+5. Oprogramowanie osób trzecich (m.in. Capacitor, AndroidX – licencje MIT/Apache-2.0) pozostaje
+   na swoich licencjach.
+6. Brak gwarancji. Aplikacja jest udostępniana „tak jak jest”, bez żadnej gwarancji. To narzędzie
+   informacyjne i NIE służy do nawigacji ani do podejmowania decyzji dotyczących bezpieczeństwa lotu.
+   Autor nie odpowiada za szkody wynikłe z użycia aplikacji.
+
+Kontakt w sprawie zgody na inne użycie: https://radar-epwr.pl

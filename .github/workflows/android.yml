@@ -1,0 +1,98 @@
+# Budowanie i publikacja aplikacji Android „Radar EPWR”.
+#  - push do main (zmiany w android-app/) albo ręczne uruchomienie: sprawdzian + podpisany APK jako artefakt (14 dni),
+#  - tag vX.Y.Z (np. v1.0.1): podpisany APK + AAB trafiają do GitHub Releases pod STAŁYMI nazwami, więc link
+#      https://github.com/GrzegorzKryszczuk/radar-epwr-app/releases/latest/download/radar-epwr.apk
+#    zawsze pobiera najnowszą wersję.
+# Sekrety repozytorium: RADAR_KEYSTORE_B64, RADAR_KEYSTORE_PASSWORD, RADAR_KEY_ALIAS, RADAR_KEY_PASSWORD (klucz podpisu),
+#   GOOGLE_SERVICES_JSON_B64 (Firebase; plik nie leży w repozytorium).
+name: Android – Radar EPWR
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'android-app/**'
+      - '.github/workflows/android.yml'
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: android-app
+    env:
+      APP_VERSION_CODE: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Wersja (z tagu vX.Y.Z albo 1.0.<numer>)
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then V="${GITHUB_REF_NAME#v}"; else V="1.0.${GITHUB_RUN_NUMBER}-dev"; fi
+          echo "APP_VERSION_NAME=$V" >> "$GITHUB_ENV"; echo "Wersja: $V"
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: android-app/package-lock.json
+      - name: Zależności (npm ci)
+        run: npm ci --no-audit --no-fund
+      - name: Testy powiadomień (Worker leży w prywatnym repo strony – pomijamy w CI)
+        run: echo "Testy push uruchamiane lokalnie (node --test testy/worker-push.test.js)"
+      - name: Firebase i klucz podpisu z sekretów
+        env:
+          GS: ${{ secrets.GOOGLE_SERVICES_JSON_B64 }}
+          KS: ${{ secrets.RADAR_KEYSTORE_B64 }}
+        run: |
+          [ -n "$GS" ] && echo "$GS" | base64 -d > android/app/google-services.json && echo "Firebase: TAK" || echo "Firebase: brak (bez push)"
+          if [ -n "$KS" ]; then
+            echo "$KS" | base64 -d > "$RUNNER_TEMP/radar.p12"
+            echo "RADAR_KEYSTORE_FILE=$RUNNER_TEMP/radar.p12" >> "$GITHUB_ENV"
+            echo "Podpis: TAK"
+          else
+            echo "::error::Brak sekretu RADAR_KEYSTORE_B64 – bez klucza APK nie da się aktualizować na telefonach"; exit 1
+          fi
+      - name: Synchronizacja Capacitor
+        run: npx cap sync android
+      - name: Podpisany APK i AAB
+        working-directory: android-app/android
+        env:
+          RADAR_KEYSTORE_PASSWORD: ${{ secrets.RADAR_KEYSTORE_PASSWORD }}
+          RADAR_KEY_ALIAS: ${{ secrets.RADAR_KEY_ALIAS }}
+          RADAR_KEY_PASSWORD: ${{ secrets.RADAR_KEY_PASSWORD }}
+        run: chmod +x gradlew && ./gradlew --no-daemon assembleRelease bundleRelease
+      - name: Pliki wydania pod stałymi nazwami
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/dist"
+          cp android/app/build/outputs/apk/release/*.apk "$GITHUB_WORKSPACE/dist/radar-epwr.apk"
+          cp android/app/build/outputs/bundle/release/*.aab "$GITHUB_WORKSPACE/dist/radar-epwr.aab"
+          cd "$GITHUB_WORKSPACE/dist" && sha256sum radar-epwr.apk > radar-epwr.apk.sha256 && cat radar-epwr.apk.sha256
+          # sprawdzian podpisu APK
+          "$ANDROID_HOME"/build-tools/$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -1)/apksigner verify --print-certs radar-epwr.apk | head -3
+      - uses: actions/upload-artifact@v5
+        with:
+          name: radar-epwr-apk
+          path: dist/radar-epwr.apk
+          retention-days: 14
+      - name: GitHub Release (tylko dla tagu)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Radar EPWR ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            dist/radar-epwr.apk
+            dist/radar-epwr.apk.sha256
+            dist/radar-epwr.aab

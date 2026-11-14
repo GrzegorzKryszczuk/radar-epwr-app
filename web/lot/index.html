@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pl" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!-- Strona udostępnionego lotu (link z aplikacji Radar EPWR). Działa bez aplikacji. Bez obcych skryptów. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://radar-epwr.festusus.workers.dev https://api.adsbdb.com https://vrs-standing-data.adsb.lol https://api.planespotters.net; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#0b1220">
+<title>Śledź ten lot na żywo – Radar EPWR</title>
+<meta name="description" content="Samolot na żywo nad Wrocławiem: pozycja, wysokość, prędkość i ślad lotu. Radar EPWR – bezpłatny radar lotniska Wrocław.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="Radar EPWR">
+<meta property="og:title" content="✈️ Śledź ten lot na żywo – Radar EPWR">
+<meta property="og:description" content="Pozycja samolotu, wysokość, prędkość i ślad lotu nad Wrocławiem na żywo. Bezpłatnie, bez logowania.">
+<meta property="og:url" content="https://radar-epwr.pl/lot/">
+<meta property="og:image" content="https://radar-epwr.pl/og-image.png?v=2">
+<meta property="og:image:secure_url" content="https://radar-epwr.pl/og-image.png?v=2">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/app/ikona-192.png">
+<link rel="stylesheet" href="/app/app.css?v=1">
+<link rel="stylesheet" href="/lot/lot.css?v=1">
+<script src="/app/config.js?v=1"></script>
+</head>
+<body class="lot">
+<header class="top">
+  <a class="brand" href="/" aria-label="Radar EPWR – strona główna">
+    <img src="/app/ikona-192.png" width="32" height="32" alt="">
+    <div><b>RADAR EPWR</b><small>lot na żywo nad Wrocławiem</small></div>
+  </a>
+  <a class="btn sm" id="getApp" href="/">Pełny radar</a>
+</header>
+<main class="lot-main">
+  <div class="mapwrap"><div id="map" class="map">Ładowanie radaru…</div></div>
+  <section class="card lot-card" aria-live="polite">
+    <h1 id="lTitle">Szukam lotu…</h1>
+    <p id="lSub" class="hint"></p>
+    <dl class="kv" id="lKv" hidden></dl>
+    <div class="acts">
+      <button type="button" class="btn ghost" id="lShare">Udostępnij dalej</button>
+      <a class="btn coffee" href="https://buycoffee.to/radar-epwr" target="_blank" rel="noopener">☕ Postaw kawę Radarowi</a>
+    </div>
+    <p class="note">Dane ADS-B: adsb.lol / adsb.fi (ODbL), rozkład: FlightAware / Avionio. Poglądowo – nie do nawigacji. Radar EPWR to bezpłatny projekt hobbystyczny.</p>
+  </section>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script src="/lot/lot.js?v=1"></script>
+</body>
+</html>

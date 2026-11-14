@@ -1,0 +1,13 @@
+node_modules/
+.DS_Store
+*.jks
+*.keystore
+*.p12
+*.apk
+*.aab
+keystore.properties
+local.properties
+google-services.json
+.gradle/
+build/
+.env*

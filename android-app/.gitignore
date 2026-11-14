@@ -1,0 +1,10 @@
+node_modules/
+android/keystore.properties
+*.jks
+*.keystore
+local.properties
+android/.gradle/
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/build/
+.DS_Store

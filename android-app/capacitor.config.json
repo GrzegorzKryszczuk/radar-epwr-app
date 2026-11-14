@@ -1,0 +1,29 @@
+{
+  "appId": "pl.radarepwr.app",
+  "appName": "Radar EPWR",
+  "webDir": "www",
+  "loggingBehavior": "debug",
+  "server": {
+    "url": "https://radar-epwr.pl/app/",
+    "cleartext": false,
+    "allowNavigation": ["radar-epwr.pl"],
+    "errorPath": "offline.html",
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": false,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#0b1220"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 600,
+      "backgroundColor": "#0b1220",
+      "showSpinner": false
+    },
+    "FirebaseMessaging": {
+      "presentationOptions": ["alert", "sound"]
+    }
+  }
+}

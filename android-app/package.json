@@ -1,0 +1,25 @@
+{
+  "name": "radar-epwr-android",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aplikacja Android Radar EPWR: powłoka Capacitor ładująca https://radar-epwr.pl/app/ + natywne powiadomienia FCM i udostępnianie",
+  "scripts": {
+    "sync": "cap sync android",
+    "open": "cap open android",
+    "apk": "cap sync android && cd android && ./gradlew assembleDebug",
+    "aab": "cap sync android && cd android && ./gradlew bundleRelease"
+  },
+  "dependencies": {
+    "@capacitor-firebase/messaging": "8.6.0",
+    "@capacitor/android": "8.6.2",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/browser": "8.0.5",
+    "@capacitor/core": "8.6.2",
+    "@capacitor/share": "8.0.3",
+    "@capacitor/splash-screen": "8.0.2",
+    "@capacitor/status-bar": "8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.2"
+  }
+}
