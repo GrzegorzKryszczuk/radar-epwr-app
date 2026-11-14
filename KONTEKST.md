@@ -6,7 +6,7 @@ Aktualizacja: 2026-11-14
 - Strona/Worker/n8n: osobne repo prywatne `radar-epwr` (folder „RADAR EPWR”); ekrany tam serwuje Vercel z `app/` i `lot/`.
 
 ## Mapa
-- `android-app/` – Capacitor (www/, android/); `web/app`, `web/lot` – ekrany (źródło prawdy); `docs/` – instrukcje; `testy/worker-push.test.js`; `scripts/sync-do-strony.sh` – kopiuje web/ → repo strony i pushuje (deploy ekranów).
+- `android-app/` – Capacitor (www/, android/); `web/app`, `web/lot`, `web/pobierz` (strona instalacji APK) – ekrany (źródło prawdy); `docs/` – instrukcje; `testy/worker-push.test.js`; `scripts/sync-do-strony.sh` – kopiuje web/ → repo strony i pushuje (deploy ekranów).
 - `.github/workflows/android.yml` – podpisany APK+AAB; tag `vX.Y.Z` → Release (`radar-epwr.apk`, `.sha256`, `.aab`). Link stały: `.../releases/latest/download/radar-epwr.apk`.
 
 ## Wydanie / wdrożenie

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta name="theme-color" content="#0b1220">
+<title>Pobierz aplikację Radar EPWR na Androida</title>
+<meta name="description" content="Bezpłatna aplikacja Radar EPWR na Androida: radar lotów nad Wrocławiem na żywo, alarmy 7700 i powiadomienia. Instalacja jednym plikiem, bez Google Play.">
+<link rel="canonical" href="https://radar-epwr.pl/pobierz/">
+<link rel="icon" href="/app/ikona-192.png">
+<style>
+:root{--bg:#0b1220;--card:#131c30;--line:#24324f;--text:#e8eefc;--muted:#9fb0d0;--acc:#3da5ff;--ok:#2fd27a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:28px 16px 48px}
+.logo{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.logo img{width:64px;height:64px;border-radius:16px}
+h1{font-size:1.5rem;margin:0;line-height:1.2}
+.sub{color:var(--muted);margin:4px 0 22px}
+.btn{display:block;text-align:center;background:var(--acc);color:#04101f;font-weight:700;font-size:1.15rem;padding:16px;border-radius:14px;text-decoration:none}
+.btn:active{filter:brightness(.9)}
+.meta{color:var(--muted);font-size:.85rem;text-align:center;margin:8px 0 0}
+.desk{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:16px}
+.desk b{color:var(--acc)}
+ol{padding-left:22px;margin:0}
+li{margin:8px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:22px}
+h2{font-size:1.05rem;margin:0 0 8px}
+.small{color:var(--muted);font-size:.88rem}
+code{background:#0b1220;padding:2px 6px;border-radius:6px;word-break:break-all;font-size:.8rem}
+a{color:var(--acc)}
+</style>
+</head>
+<body>
+<main>
+  <div class="logo"><img src="/app/ikona-192.png" alt="" width="64" height="64"><div><h1>Radar EPWR na Androida</h1></div></div>
+  <p class="sub">Radar lotów nad Wrocławiem na żywo, alarmy 7700/7600/7500 i powiadomienia. Bezpłatnie, bez reklam i kont.</p>
+
+  <div class="desk" id="desk">📱 Otwórz tę stronę <b>na telefonie z Androidem</b> (np. przez <code>radar-epwr.pl/pobierz</code>), żeby zainstalować aplikację. Plik można też pobrać tutaj i przesłać na telefon.</div>
+
+  <a class="btn" id="dl" href="https://github.com/GrzegorzKryszczuk/radar-epwr-app/releases/latest/download/radar-epwr.apk" rel="noopener">⬇ Pobierz aplikację (APK)</a>
+  <p class="meta" id="meta">Android 8.0 lub nowszy</p>
+
+  <div class="card">
+    <h2>Instalacja w 3 krokach</h2>
+    <ol>
+      <li>Stuknij <b>Pobierz</b>. Jeśli Chrome zapyta, wybierz <b>Pobierz mimo to</b> (tak jest przy każdym pliku APK spoza sklepu).</li>
+      <li>Otwórz pobrany plik. Przy pierwszej instalacji Android poprosi o zgodę: <b>Ustawienia → Zezwól z tego źródła</b>, wróć i stuknij <b>Zainstaluj</b>.</li>
+      <li>Gotowe: ikona <b>Radar EPWR</b> jest wśród aplikacji. Przytrzymaj ją i przeciągnij na pulpit.</li>
+    </ol>
+    <p class="small">Aktualizacja: pobierz nowy plik i zainstaluj na wierzch, dane zostają. Treść ekranów odświeża się sama, nowy plik potrzebny tylko przy zmianach natywnych.</p>
+  </div>
+
+  <div class="card">
+    <h2>Czy to bezpieczne?</h2>
+    <p class="small" style="margin:0">Kod aplikacji jest publiczny: <a href="https://github.com/GrzegorzKryszczuk/radar-epwr-app" rel="noopener">github.com/GrzegorzKryszczuk/radar-epwr-app</a>. Plik buduje i podpisuje GitHub Actions. Sumę SHA-256 znajdziesz przy każdym wydaniu. Aplikacja nie ma reklam ani analityki, <a href="/app/prywatnosc.html">polityka prywatności</a>. Narzędzie informacyjne, nie do nawigacji.</p>
+  </div>
+  <p class="small" style="text-align:center;margin-top:22px"><a href="/">← radar-epwr.pl</a></p>
+</main>
+<script src="pobierz.js"></script>
+</body>
+</html>

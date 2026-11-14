@@ -72,7 +72,7 @@ jobs:
           RADAR_KEYSTORE_PASSWORD: ${{ secrets.RADAR_KEYSTORE_PASSWORD }}
           RADAR_KEY_ALIAS: ${{ secrets.RADAR_KEY_ALIAS }}
           RADAR_KEY_PASSWORD: ${{ secrets.RADAR_KEY_PASSWORD }}
-        run: chmod +x gradlew && ./gradlew --no-daemon assembleRelease bundleRelease
+        run: chmod +x gradlew && ./gradlew --no-daemon assembleRelease bundleRelease --stacktrace
       - name: Pliki wydania pod stałymi nazwami
         run: |
           mkdir -p "$GITHUB_WORKSPACE/dist"
