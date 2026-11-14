@@ -1,5 +1,11 @@
 # Aplikacja Android „Radar EPWR” – instrukcja
 
+> **Aktualizacja 2026-11-14:** projekt aplikacji mieszka teraz w tym repozytorium (`radar-epwr-app`). Ścieżki: `app/`→`web/app/`, `lot/`→`web/lot/`,
+> `Aplikacja/android-app/`→`android-app/`. Klucz podpisu (PKCS12) i wszystkie sekrety Actions są już ustawione; APK/AAB budują się po tagu `vX.Y.Z`
+> i trafiają do Releases (`radar-epwr.apk`). Punkty 1–3 poniżej są więc zrobione – zostają punkty 4–5 (test na telefonie, Google Play).
+> Klucz: `~/Desktop/Kodowanie/klucze-podpisu/` (zrób kopię zapasową!). Przy Google Play włącz „Podpisywanie aplikacji przez Google Play” – ten klucz będzie kluczem przesyłania.
+
+
 Stan: 2026-11-14. Aplikacja gotowa w kodzie i wdrożona po stronie serwera. Do publikacji brakuje kroków, które wymagają **Twojego konta Google** (Firebase, Google Play) – opisane niżej, punkt po punkcie.
 
 ## Jak to jest zbudowane
