@@ -100,12 +100,27 @@
   // a Google dostarcza ją urządzeniom zapisanym na ten temat. Wyłączenie = wypisanie urządzenia z tematu.
   var TOPICS = (CFG.topics || []).filter(function (t) { return !t.planned; });
   var KEY = 'app.topics';
-  function loadChoice() {
-    var c = null;
-    try { c = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { c = null; }
-    return c && typeof c === 'object' ? c : null;
+  // Wybór zapisujemy PODWÓJNIE: localStorage + trwałe ciasteczko (rok, tylko /app/). WebView Androida zapisuje localStorage
+  // na dysk z opóźnieniem – po szybkim zamknięciu aplikacji wybór potrafił zniknąć (znów ekran powitalny i domyślne tematy).
+  var CK = 'radar_topics';
+  function parseC(t) { try { var c = JSON.parse(t || 'null'); return c && typeof c === 'object' && !Array.isArray(c) ? c : null; } catch (e) { return null; } }
+  function readCookie() {
+    var m = document.cookie.match(new RegExp('(?:^|; )' + CK + '=([^;]*)'));
+    if (!m) return null;
+    try { return parseC(decodeURIComponent(m[1])); } catch (e) { return null; }
   }
-  function saveChoice(c) { try { localStorage.setItem(KEY, JSON.stringify(c)); } catch (e) { /* tryb prywatny */ } }
+  function loadChoice() {
+    var ls = null; try { ls = parseC(localStorage.getItem(KEY)); } catch (e) { ls = null; }
+    var ck = readCookie();
+    var c = ls || ck;
+    if (c && (!ls || !ck)) saveChoice(c);   // brakuje jednej kopii – odtwarzamy ją
+    return c;
+  }
+  function saveChoice(c) {
+    var t = JSON.stringify(c || {});
+    try { localStorage.setItem(KEY, t); } catch (e) { /* tryb prywatny */ }
+    try { document.cookie = CK + '=' + encodeURIComponent(t) + '; Max-Age=31536000; Path=/app/; Secure; SameSite=Lax'; } catch (e) { /* bez ciasteczek */ }
+  }
   function choice() {
     var c = loadChoice() || {}, out = {};
     TOPICS.forEach(function (t) { out[t.id] = t.required ? true : (c[t.id] !== undefined ? !!c[t.id] : !!t.def); });
