@@ -9,7 +9,7 @@
 (function () {
   'use strict';
   window.RADAR_APP_CONFIG = {
-    version: '1.0.0',                      // wersja ekranów aplikacji (widać ją w „Więcej → O aplikacji”)
+    version: '1.1.0',                      // wersja ekranów aplikacji (widać ją w „Więcej → O aplikacji”)
     worker: 'https://radar-epwr.festusus.workers.dev',
     site: 'https://radar-epwr.pl',
     coffee: 'https://buycoffee.to/radar-epwr',
@@ -20,14 +20,16 @@
     alarm7700: 'https://7700.pl/api/alarm',
     playStore: 'https://play.google.com/store/apps/details?id=pl.radarepwr.app',
     playPublished: false,                  // true po publikacji w Google Play – strona /lot/ pokaże przycisk „Pobierz aplikację”
+    apkLatest: 'https://github.com/GrzegorzKryszczuk/radar-epwr-app/releases/latest/download/radar-epwr.apk',   // aktualizacje poza Google Play
 
     // Tematy powiadomień push (FCM). Nazwy tematów MUSZĄ zgadzać się z Workerem (FCM_TOPICS w cloudflare-worker-adsb.js).
     // channel = kanał powiadomień Androida (dźwięk/ważność ustawia użytkownik w ustawieniach systemu).
-    // def = stan domyślny przy pierwszym uruchomieniu. planned = temat przygotowany, ale serwer jeszcze go nie wysyła (ukryty).
+    // def = stan domyślny przy pierwszym uruchomieniu. required = zawsze włączony (bez przełącznika). planned = temat przygotowany, ale serwer jeszcze go nie wysyła (ukryty).
     topics: [
       { id: 'alarmy', channel: 'alarmy', name: 'Alarmy lotniskowe', desc: 'Kod czerwony i żółty – to samo, co trafia na kanał Telegram: squawk 7700/7600/7500, przekierowania, odejścia na drugi krąg, holding.', def: true, importance: 5 },
       { id: 'zdarzenia', channel: 'zdarzenia', name: 'Co się dzieje nad lotniskiem', desc: 'Pozostałe zdarzenia z radaru: rzadcy goście, wojsko, śmigłowce, kalibracja, zmiana pasa, pogoda, podsumowanie dnia.', def: false, importance: 3 },
       { id: 'transmisja', channel: 'transmisja', name: 'Transmisja na żywo', desc: 'Gdy zaczyna się transmisja Radar EPWR na YouTube.', def: true, importance: 4 },
+      { id: 'aktualizacje', channel: 'aktualizacje', name: 'Nowa wersja aplikacji', desc: 'Gdy pojawi się aktualizacja do pobrania. Zawsze włączone – bez tego aplikacja się nie zaktualizuje.', def: true, required: true, importance: 3 },
       { id: 'odbior', channel: 'odbior', name: 'Odbiór z lotniska', desc: 'Twoje śledzone przyloty: wyjedź teraz, wylądował.', def: true, importance: 4, planned: true },
       { id: 'alarm7700', channel: 'alarmy', name: 'Alarmy squawk nad Polską', desc: 'Kody 7700/7600/7500 w całej Polsce (dane 7700.pl).', def: false, importance: 5, planned: true }
     ],

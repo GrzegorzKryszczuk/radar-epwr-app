@@ -23,11 +23,15 @@ globalThis.caches = {
 // Atrapa fetch: token Google i wysyłka FCM; zapisuje wszystkie wywołania
 let calls = [];
 let fcmStatus = 200;
+let ghLoc = null;
+let ghMissing = new Set();   // adresy APK, których jeszcze nie wgrano   // przekierowanie „releases/latest/download” (atrapa GitHuba)
 globalThis.fetch = async (url, init) => {
   const u = String(url);
   calls.push({ url: u, init });
   if (u === 'https://oauth2.googleapis.com/token') return new Response(JSON.stringify({ access_token: 'ya29.TEST', expires_in: 3600 }), { status: 200 });
   if (u.startsWith('https://fcm.googleapis.com/')) return new Response('{}', { status: fcmStatus });
+  if (u.endsWith('/releases/latest/download/radar-epwr.apk')) return ghLoc ? new Response(null, { status: 302, headers: { Location: ghLoc } }) : new Response('nie', { status: 404 });
+  if (u.startsWith('https://github.com/')) return ghMissing.has(u) ? new Response('nie', { status: 404 }) : new Response(null, { status: 302, headers: { Location: 'https://objects.githubusercontent.com/x' } });
   return new Response('nie', { status: 404 });
 };
 const fcmCalls = () => calls.filter((c) => c.url.startsWith('https://fcm.googleapis.com/')).map((c) => JSON.parse(c.init.body).message);
@@ -45,7 +49,7 @@ test.before(async () => {
   SA = JSON.stringify({ type: 'service_account', project_id: 'radar-epwr-test', client_email: 'push@radar-epwr-test.iam.gserviceaccount.com',
     private_key: '-----BEGIN PRIVATE KEY-----\n' + der.match(/.{1,64}/g).join('\n') + '\n-----END PRIVATE KEY-----\n' });
 });
-test.beforeEach(() => { calls = []; store.clear(); fcmStatus = 200; W.fcmReset(); });
+test.beforeEach(() => { calls = []; store.clear(); fcmStatus = 200; ghLoc = null; ghMissing = new Set(); W.fcmReset(); });
 
 function kv() { const m = new Map(); return { get: async (k) => m.get(k) ?? null, put: async (k, v) => { m.set(k, v); } }; }
 const ENV = (extra) => ({ ALERTS_TOKEN: 'tok-n8n', FCM_SERVICE_ACCOUNT: SA, FLIGHTS_KV: kv(), ...extra });
@@ -218,4 +222,81 @@ test('FCM 401 (odrzucony token) – następna wysyłka pobiera nowy token Google
   c = ctxs();
   await W.handleAlerts(postAlerts({ id: 'u2', ts: now(), rule: 'holding', title: 'H2' }), env, c.ctx, {}); await c.done();
   assert.equal(calls.filter((x) => x.url === 'https://oauth2.googleapis.com/token').length, 2);
+});
+
+// ---------- Nowa wersja aplikacji → temat „aktualizacje” ----------
+const REL = (v) => 'https://github.com/GrzegorzKryszczuk/radar-epwr-app/releases/download/v' + v + '/radar-epwr.apk';
+
+test('wydanie: pierwsze sprawdzenie tylko zapamiętuje wersję (bez push), nowsza wersja → jeden push', async () => {
+  const env = ENV();
+  ghLoc = REL('1.0.0');
+  let r = await W.checkAppRelease(env);
+  assert.deepEqual([r.v, r.sent], ['1.0.0', false]);
+  assert.equal(fcmCalls().length, 0);
+  r = await W.checkAppRelease(env);   // ta sama wersja – nic
+  assert.equal(r.sent, false);
+  ghLoc = REL('1.0.1');
+  r = await W.checkAppRelease(env);
+  assert.equal(r.sent, true);
+  const m = fcmCalls();
+  assert.equal(m.length, 1);
+  assert.equal(m[0].topic, 'aktualizacje');
+  assert.equal(m[0].android.notification.channel_id, 'aktualizacje');
+  assert.match(m[0].notification.title, /1\.0\.1/);
+  assert.equal(m[0].data.url, '/app/#wiecej?update=1');
+  r = await W.checkAppRelease(env);   // drugi raz – bez powtórki
+  assert.equal(fcmCalls().length, 1);
+  const rec = JSON.parse(await env.FLIGHTS_KV.get('app:release'));
+  assert.equal(rec.v, '1.0.1');
+  assert.equal(rec.apk, REL('1.0.1'));
+});
+
+test('wydanie: brak APK / dziwne przekierowanie / starsza wersja – bez push i bez zapisu', async () => {
+  const env = ENV();
+  ghLoc = null;
+  assert.equal((await W.checkAppRelease(env)).ok, false);
+  ghLoc = 'https://evil.example/x.apk';
+  assert.equal((await W.checkAppRelease(env)).ok, false);
+  assert.equal(await env.FLIGHTS_KV.get('app:release'), null);
+  ghLoc = REL('1.2.0'); await W.checkAppRelease(env);
+  ghLoc = REL('1.1.9'); await W.checkAppRelease(env);
+  assert.equal(fcmCalls().length, 0);
+  assert.equal(W.cmpVer('1.0.10', '1.0.9'), 1);
+});
+
+test('GET /appver podaje wersję z KV (albo null przed pierwszym sprawdzeniem)', async () => {
+  const env = ENV();
+  let c = ctxs();
+  let r = await W.handleAppVersion(env, c.ctx, {}); await c.done();
+  assert.equal((await r.json()).version, null);
+  store.clear();
+  ghLoc = REL('1.0.3'); await W.checkAppRelease(env);
+  c = ctxs();
+  r = await W.handleAppVersion(env, c.ctx, {}); await c.done();
+  const d = await r.json();
+  assert.equal(d.version, '1.0.3');
+  assert.equal(d.apk, REL('1.0.3'));
+});
+
+test('wydanie: APK jeszcze niewgrany albo nieudany push → bez zapisu KV, ponowienie w następnym cronie', async () => {
+  const env = ENV();
+  ghLoc = REL('1.0.0'); await W.checkAppRelease(env);
+  ghLoc = REL('1.0.1'); ghMissing.add(REL('1.0.1'));
+  assert.equal((await W.checkAppRelease(env)).ok, false);
+  assert.equal(JSON.parse(await env.FLIGHTS_KV.get('app:release')).v, '1.0.0');
+  ghMissing.clear(); fcmStatus = 500;
+  assert.equal((await W.checkAppRelease(env)).sent, false);
+  assert.equal(JSON.parse(await env.FLIGHTS_KV.get('app:release')).v, '1.0.0');
+  fcmStatus = 200;
+  assert.equal((await W.checkAppRelease(env)).sent, true);
+  assert.equal(JSON.parse(await env.FLIGHTS_KV.get('app:release')).v, '1.0.1');
+});
+
+test('wydanie: cofnięte wydanie (starsza wersja) poprawia KV bez push, kolejne wyższe dostaje push', async () => {
+  const env = ENV();
+  ghLoc = REL('1.2.0'); await W.checkAppRelease(env);
+  ghLoc = REL('1.1.0'); await W.checkAppRelease(env);
+  assert.equal(JSON.parse(await env.FLIGHTS_KV.get('app:release')).v, '1.1.0');
+  ghLoc = REL('1.1.1'); assert.equal((await W.checkAppRelease(env)).sent, true);
+  assert.equal(fcmCalls().length, 1);
 });

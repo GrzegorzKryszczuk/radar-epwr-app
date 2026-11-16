@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-16
+- Powiadomienie o nowej wersji: temat push `aktualizacje` (zawsze włączony, bez przełącznika). Worker strony co 2 h (4–20 UTC) sprawdza najnowsze wydanie na GitHubie i raz wysyła push; w aplikacji pasek „Dostępna nowa wersja” + arkusz z pobraniem APK (także dla osób bez zgody na powiadomienia), „Więcej → Sprawdź aktualizację”, w „O aplikacji” wersja APK.
+- Poprawka: mapa (warstwy Leaflet) zasłaniała ekran powitalny z wyborem powiadomień – `.mapwrap` izoluje warstwy.
+- Zakładka Radar → Pogoda: tabele METAR, Opady i SIGMET pod mapą zamiast na niej (moduł pogody `opts.dock`, `pogoda.js?v=5`).
+- Cotygodniowe podsumowanie pobrań APK (`.github/workflows/pobrania.yml`, poniedziałek 8:00) jako komentarz w zgłoszeniu „Statystyki pobrań aplikacji” → e-mail z GitHuba.
+- Testy push: 19 (wydania, `/appver`, ponowienie nieudanej wysyłki).
+
 ## 2026-11-14
 - Utworzenie repozytorium: powłoka Android, ekrany `web/app` i `web/lot`, dokumentacja, testy push.
 - Podpisany APK/AAB budowany w GitHub Actions, wydania w Releases pod stałymi nazwami (`radar-epwr.apk`).

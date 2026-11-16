@@ -108,7 +108,7 @@
   function saveChoice(c) { try { localStorage.setItem(KEY, JSON.stringify(c)); } catch (e) { /* tryb prywatny */ } }
   function choice() {
     var c = loadChoice() || {}, out = {};
-    TOPICS.forEach(function (t) { out[t.id] = c[t.id] !== undefined ? !!c[t.id] : !!t.def; });
+    TOPICS.forEach(function (t) { out[t.id] = t.required ? true : (c[t.id] !== undefined ? !!c[t.id] : !!t.def); });
     if (c.test) out.test = true;   // ukryty temat testowy właściciela (7× stuknij numer wersji)
     return out;
   }
@@ -223,8 +223,13 @@
     toast('Ustawienia → Aplikacje → Radar EPWR → Powiadomienia', 5000);
   }
 
+  // Wersja zainstalowanej aplikacji (versionName z APK, np. „1.0.0”) albo null poza aplikacją
+  function appVersion() {
+    return plugin('App').then(function (A) { return A ? A.getInfo().then(function (i) { return i && i.version || null; }) : null; }).catch(function () { return null; });
+  }
+
   window.AppNative = {
-    isApp: isApp, plugin: plugin, share: share, toast: toast, openExternal: openExternal,
+    isApp: isApp, appVersion: appVersion, plugin: plugin, share: share, toast: toast, openExternal: openExternal,
     push: { topics: TOPICS, choice: choice, hasChoice: function () { return !!loadChoice(); }, saveChoice: saveChoice, enable: enable, setTopic: setTopic, permission: permission, openSystemSettings: openSystemSettings }
   };
 })();

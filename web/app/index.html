@@ -15,9 +15,9 @@
 <link rel="manifest" href="/app/manifest.webmanifest">
 <link rel="icon" href="/app/ikona-192.png">
 <link rel="apple-touch-icon" href="/app/ikona-192.png">
-<link rel="stylesheet" href="/app/app.css?v=1">
-<script src="/app/config.js?v=1"></script>
-<script src="/app/theme.js?v=1"></script>
+<link rel="stylesheet" href="/app/app.css?v=2">
+<script src="/app/config.js?v=2"></script>
+<script src="/app/theme.js?v=2"></script>
 </head>
 <body>
 <a class="skip" href="#views">Przejdź do treści</a>
@@ -42,6 +42,9 @@
   <button type="button" class="btn sm red" id="liveWatch">Oglądaj</button>
   <button type="button" class="x" id="liveClose" aria-label="Zamknij baner">×</button>
 </div>
+
+<!-- Nowa wersja aplikacji (APK z GitHub Releases) – także dla osób bez zgody na powiadomienia -->
+<button type="button" class="upbar" id="upBar" hidden><span class="tag">AKTUALIZACJA</span><span class="txt" id="upTxt">Dostępna nowa wersja aplikacji</span><span aria-hidden="true">›</span></button>
 
 <!-- Pasek alarmu (kod czerwony/żółty z ostatnich 45/30 min) – ten sam, co na stronie i Telegramie -->
 <button type="button" class="abar" id="abar" hidden><span class="tag" id="abarTag">UWAGA</span><span class="txt" id="abarTxt"></span><span aria-hidden="true">›</span></button>
@@ -69,6 +72,8 @@
         <button type="button" class="btn sm" id="selShare"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1z"/></svg>Udostępnij</button>
       </div>
     </div>
+    <!-- Tryb Pogoda: tabele (METAR, opady, SIGMET) POD mapą, żeby jej nie zasłaniały -->
+    <div class="pgdock" id="pogodaDock" hidden></div>
     <p class="foot" id="mapFoot">Samoloty: adsb.lol / adsb.fi (ODbL) · mapa © OpenStreetMap · stuknij samolot: karta, ślad i udostępnianie</p>
   </section>
 
@@ -167,6 +172,7 @@
       <p class="src">Źródła: samoloty – adsb.lol (ODbL), zapasowo adsb.fi · mapa – © OpenStreetMap · procedury – AIP Polska (PAŻP) · rozkład – FlightAware, Avionio · pogoda – Open-Meteo, aviationweather.gov, RainViewer, IMGW · trasy – adsbdb · zdjęcia – Planespotters · alarm squawk – 7700.pl · nasłuch – LiveATC.net.</p>
       <p class="links"><a href="https://radar-epwr.pl/app/prywatnosc.html" data-ext>Polityka prywatności aplikacji</a> · <a href="https://radar-epwr.pl/regulamin/" data-ext>Regulamin</a> · <a href="https://radar-epwr.pl/" data-ext>radar-epwr.pl</a></p>
       <p class="ver" id="ver">Wersja</p>
+      <button type="button" class="btn ghost full" id="upCheck" hidden>Sprawdź aktualizację</button>
     </div>
   </section>
 </main>
@@ -210,7 +216,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
-<script src="/app/native.js?v=1"></script>
-<script src="/app/app.js?v=1"></script>
+<script src="/app/native.js?v=2"></script>
+<script src="/app/app.js?v=2"></script>
 </body>
 </html>

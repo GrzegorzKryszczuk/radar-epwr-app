@@ -66,6 +66,7 @@
     show(r.view);
     if (r.view === 'radar' && r.q.hex) radarFocus(r.q.hex);
     if (r.view === 'zdarzenia' && r.q.f) setEvFilter(r.q.f);
+    if (r.q.update) { checkUpdate(true); history.replaceState(null, '', '#' + r.view); }   // kolejny push z tym samym adresem znów zadziała
   }
   window.addEventListener('hashchange', route);
   // Przycisk Wstecz w Androidzie (native.js): true = obsłużone tutaj
@@ -165,8 +166,8 @@
     ensureLeaflet()
       .then(function () { return load('/pogoda/logika.js?v=2'); })
       .then(function () { return window.radarEpwrKarta ? 0 : load('/procedury/epwr-procedury.js?v=15'); })
-      .then(function () { return load('/pogoda/pogoda.js?v=4'); })
-      .then(function () { $('pogodaMap').textContent = ''; radar.pg = window.radarEpwrPogoda($('pogodaMap'), { workerBase: W, params: '', flags: { lightning: false } }); })
+      .then(function () { return load('/pogoda/pogoda.js?v=5'); })
+      .then(function () { $('pogodaMap').textContent = ''; radar.pg = window.radarEpwrPogoda($('pogodaMap'), { workerBase: W, params: '', flags: { lightning: false }, dock: $('pogodaDock') }); })
       .catch(function () { $('pogodaMap').textContent = 'Nie udało się wczytać mapy pogody.'; })
       .then(function () { radar.pgLoading = false; });
   }
@@ -180,6 +181,8 @@
     document.querySelectorAll('#v-radar .seg button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.mode === m ? 'true' : 'false'); });
     var pog = m === 'pogoda';
     $('map').hidden = pog; $('pogodaMap').hidden = !pog;
+    $('pogodaDock').hidden = !pog; $('v-radar').classList.toggle('pog', pog);
+    if (!pog) $('v-radar').scrollTop = 0;
     $('selBar').hidden = pog || !radar.sel;
     $('mapFoot').textContent = FOOT[m];
     if (pog) { initPogoda(); return; }
@@ -622,7 +625,7 @@
   function topicRows(c, idp) {
     return N.push.topics.map(function (t) {
       return '<label class="topic"><div><b>' + esc(t.name) + '</b><small>' + esc(t.desc) + '</small></div>' +
-        '<input type="checkbox" class="sw" data-topic="' + esc(t.id) + '" id="' + idp + t.id + '"' + (c[t.id] ? ' checked' : '') + '></label>';
+        '<input type="checkbox" class="sw" data-topic="' + esc(t.id) + '" id="' + idp + t.id + '"' + (c[t.id] || t.required ? ' checked' : '') + (t.required ? ' disabled' : '') + '></label>';
     }).join('');
   }
   function renderTopics() {
@@ -677,6 +680,7 @@
 
   // Wersja + ukryty tryb testowy właściciela (7 stuknięć): zdarzenia testowe i temat push „test”
   $('ver').textContent = 'Wersja ekranów ' + CFG.version + (N.isApp ? ' · aplikacja Android' : ' · przeglądarka');
+  if (N.isApp) N.appVersion().then(function (v) { if (v) $('ver').textContent = 'Aplikacja Android ' + v + ' · ekrany ' + CFG.version; });
   (function () {
     var n = 0, t = 0;
     $('ver').addEventListener('click', function () {
@@ -708,6 +712,48 @@
   if (runs >= 5 && coffeeDue() && N.push.hasChoice()) setTimeout(function () { if ($('sheet').hidden) coffeeSheet('Miło, że jesteś z nami!'); }, 45000);
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-coffee]')) lsSet('app.coffeeAsk', String(Date.now())); });
 
+  // ===================== Aktualizacja aplikacji (APK z GitHub Releases) =====================
+  // Worker /appver podaje najnowszą wydaną wersję (sprawdza GitHub co 2 h i wtedy wysyła push „aktualizacje”).
+  // Porównujemy z versionName zainstalowanego APK. Pasek pokazujemy też osobom bez zgody na powiadomienia.
+  // Ekrany (ten plik) aktualizują się same z radar-epwr.pl – nowe APK potrzebne tylko przy zmianach natywnych.
+  var upd = { latest: null, mine: null, at: 0 };
+  function verNum(v) { var m = /^(\d+)\.(\d+)\.(\d+)/.exec(String(v || '')); return m ? [+m[1], +m[2], +m[3]] : null; }
+  function newer(a, b) { var x = verNum(a), y = verNum(b); if (!x || !y) return false; for (var i = 0; i < 3; i++) { if (x[i] !== y[i]) return x[i] > y[i]; } return false; }
+  function updateSheet() {
+    var apk = upd.latest && upd.latest.apk || CFG.apkLatest;
+    var has = upd.latest && newer(upd.latest.version, upd.mine);
+    openSheet(has ? 'Nowa wersja ' + upd.latest.version : 'Masz aktualną wersję',
+      (has ? '<p>Dostępna jest nowa wersja aplikacji Radar EPWR (masz ' + esc(upd.mine) + ').</p>' +
+        '<ol class="steps"><li>Stuknij <b>Pobierz aktualizację</b> – pobierze się plik <b>radar-epwr.apk</b>.</li><li>Otwórz pobrany plik i stuknij <b>Aktualizuj</b>.</li><li>Ustawienia i powiadomienia zostają bez zmian.</li></ol>' +
+        '<div class="acts"><a class="btn" href="' + esc(apk) + '" id="upGet">Pobierz aktualizację</a><button type="button" class="btn ghost" id="upLater">Później</button></div>'
+        : '<p>Masz najnowszą wersję aplikacji' + (upd.mine ? ' (' + esc(upd.mine) + ')' : '') + '. O kolejnej damy znać powiadomieniem.</p><div class="acts"><button type="button" class="btn ghost" id="upLater">OK</button></div>'),
+      function (b) {
+        b.querySelector('#upLater').addEventListener('click', function () { if (has) lsSet('app.updLater', upd.latest.version + '|' + Date.now()); $('upBar').hidden = true; closeSheet(); });
+      });
+  }
+  function checkUpdate(open) {
+    if (!N.isApp) return;
+    var fresh = Date.now() - upd.at < 30 * MIN;
+    (fresh ? Promise.resolve() : Promise.all([N.appVersion(), getJson(W + '/appver', {})]).then(function (r) { upd.mine = r[0]; upd.latest = r[1]; upd.at = Date.now(); }))
+      .then(function () {
+        var has = upd.latest && upd.latest.version && newer(upd.latest.version, upd.mine);
+        $('upCheck').hidden = false;
+        if (has) {
+          var later = String(lsGet('app.updLater') || '').split('|');
+          $('upTxt').textContent = 'Dostępna nowa wersja ' + upd.latest.version + ' – stuknij, aby pobrać';
+          $('upBar').hidden = later[0] === upd.latest.version && Date.now() - +later[1] < 3 * 24 * 60 * MIN;
+        } else $('upBar').hidden = true;
+        if (open) {
+          if (!upd.latest || !upd.latest.version || !upd.mine) { upd.at = 0; N.toast('Nie udało się sprawdzić aktualizacji. Spróbuj później.', 4000); return; }
+          updateSheet();
+        }
+      })
+      .catch(function () { if (open) N.toast('Nie udało się sprawdzić aktualizacji. Spróbuj później.'); });
+  }
+  $('upBar').addEventListener('click', updateSheet);
+  $('upCheck').addEventListener('click', function () { upd.at = 0; checkUpdate(true); });
+  document.addEventListener('app:resume', function () { checkUpdate(false); });
+
   // ===================== Pierwsze uruchomienie (tylko w aplikacji) =====================
   function onboarding() {
     if (!N.isApp || N.push.hasChoice()) return;
@@ -722,7 +768,7 @@
       });
     });
     $('onbSkip').addEventListener('click', function () {
-      var c = pick(); Object.keys(c).forEach(function (k) { c[k] = false; });
+      var c = pick(); Object.keys(c).forEach(function (k) { c[k] = false; });   // „aktualizacje” i tak wraca (required) – bez zgody Androida działa tylko pasek w aplikacji
       N.push.saveChoice(c); $('onb').hidden = true;
     });
   }
@@ -743,4 +789,5 @@
   route();
   loadWx(); refreshAll(true); loadFlights(true);
   onboarding();
+  setTimeout(function () { if (!/update=/.test(location.hash)) checkUpdate(false); }, 3000);
 })();
