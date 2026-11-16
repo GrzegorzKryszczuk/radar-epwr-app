@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-16
+- Poprawka: w Pogodzie przewijane tabele wychodziły nad dolne menu (z-index kart w układzie flex) – dok izolowany, `z-index:auto`.
 - Wsparcie buycoffee.to – nienachalnie: stała linijka „☕ … dzięki wspierającym · Postaw kawę” pod Nasłuchem i Lotami; karta w treści ekranu (nie okno, nigdy na mapie) po dobrym momencie: nasłuch ≥ 10 min, otwarty alarm z powiadomienia, udostępnienie. Od 5. uruchomienia, raz na 30 dni, nie w trakcie alarmu; „Już wsparłem 💜” wycisza prośby na 7 dni. Usunięty arkusz wyskakujący po 45 s.
 - Powiadomienia: wybór tematów zapisywany podwójnie (localStorage + techniczne ciasteczko `radar_topics`, rok, ścieżka `/app/`) i odtwarzany z dowolnej kopii – WebView gubił wybór przy szybkim zamknięciu aplikacji. Wpis w polityce prywatności aplikacji.
 - Nasłuch w aplikacji: bez Web Audio i wskaźnika poziomu (w WebView Androida wstrzymany AudioContext wyciszał dźwięk) – zwykły odtwarzacz, animowany znacznik „gra”. Limit 12 s na połączenie/ciszę, 4 próby, potem komunikat „Strumień LiveATC chwilowo niedostępny” (wcześniej Approach/Delivery wisiały na „Buforowanie…”).

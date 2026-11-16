@@ -103,8 +103,8 @@ main{flex:1 1 auto;min-height:0;position:relative}
 /* Pogoda: mapa u góry, tabele pod nią (cały ekran przewijany) */
 #v-radar.pog{overflow-y:auto}
 #v-radar.pog .mapwrap{flex:0 0 auto;height:max(420px,58dvh)}
-.pgdock{flex:0 0 auto}
-.pgdock .pg-card{background:var(--card);color:var(--text);border:1px solid var(--line);box-shadow:none;border-radius:12px;font-size:14px;padding:10px 12px}
+.pgdock{flex:0 0 auto;isolation:isolate}   /* karty pogody mają z-index:800 (flex) – nie mogą wyjść nad dolne menu */
+.pgdock .pg-card{z-index:auto;background:var(--card);color:var(--text);border:1px solid var(--line);box-shadow:none;border-radius:12px;font-size:14px;padding:10px 12px}
 .pgdock .pg-h{font:700 17px var(--head);letter-spacing:.3px}
 .pgdock .pg-bad{color:#ff8a80}
 :root[data-theme="light"] .pgdock .pg-bad{color:#b3261e}
