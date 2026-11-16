@@ -536,14 +536,15 @@
     { key: 'delivery', name: 'EPWR Delivery', sub: 'zezwolenia przed startem', url: 'http://d.liveatc.net/epwr4_del', c: '#CA8A04' }
   ];
   var PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>', STOP = '<svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>';
-  var actx = null;
   function playerUi() {
     $('players').innerHTML = STREAMS.map(function (s) {
       return '<div class="pl" id="pl-' + s.key + '" style="--c:' + s.c + '"><button type="button" class="play" data-k="' + s.key + '" aria-label="Włącz ' + esc(s.name) + '">' + PLAY + '</button>' +
-        '<div class="info"><b>' + esc(s.name) + '</b><span id="st-' + s.key + '">' + esc(s.sub) + '</span></div><div class="vu" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>';
+        '<div class="info"><b>' + esc(s.name) + '</b><span id="st-' + s.key + '">' + esc(s.sub) + '</span></div><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></div>';
     }).join('');
     STREAMS.forEach(function (s) {
-      var el = new Audio(); el.crossOrigin = 'anonymous'; el.preload = 'none';
+      // Zwykły odtwarzacz, BEZ Web Audio: w WebView Androida AudioContext utworzony poza stuknięciem zostaje wstrzymany
+      // i wycisza strumień (dlatego bez wskaźnika poziomu/waterfall).
+      var el = new Audio(); el.preload = 'none';
       s.el = el; s.tries = 0; s.want = false;
       function st(t) { $('st-' + s.key).textContent = t; }
       function ui() {
@@ -554,54 +555,35 @@
         updateMini();
       }
       s.ui = ui;
-      el.addEventListener('playing', function () { s.tries = 0; st('Na żywo'); ui(); vu(s); });
+      el.addEventListener('playing', function () { s.tries = 0; s.started = Date.now(); st('Na żywo'); ui(); });
       el.addEventListener('waiting', function () { st('Buforowanie…'); });
       el.addEventListener('pause', function () { if (!s.want) st(s.sub); ui(); });
       function retry(why) {
         if (!s.want) return;
-        if (++s.tries > 6) { s.want = false; st('Brak połączenia – stuknij ▶ ponownie'); ui(); return; }
+        if (++s.tries > 4) { s.want = false; el.pause(); el.removeAttribute('src'); el.load(); st('Strumień LiveATC chwilowo niedostępny – spróbuj później'); ui(); return; }
         var d = Math.min(2000 * Math.pow(1.5, s.tries - 1), 15000);
         st(why + ' – ponawiam za ' + Math.round(d / 1000) + ' s…');
-        setTimeout(function () { if (s.want) { el.src = W + '/audio?url=' + encodeURIComponent(s.url); el.play().catch(function () {}); } }, d);
+        setTimeout(function () { if (s.want) { s.reset(); el.src = W + '/audio?url=' + encodeURIComponent(s.url); el.play().catch(function () {}); } }, d);
       }
       el.addEventListener('error', function () { if (el.getAttribute('src')) retry('Przerwa w strumieniu'); });
       el.addEventListener('ended', function () { retry('Strumień się zakończył'); });
-      var lastT = 0, lastCheck = 0;
-      setInterval(function () {   // strażnik: strumień „zamarł” bez błędu
-        if (el.paused || !s.want) return;
+      var lastT = -1, lastCheck = 0;
+      s.reset = function () { lastT = -1; lastCheck = Date.now(); };
+      setInterval(function () {   // strażnik: brak połączenia (LiveATC nie odpowiada) albo strumień „zamarł” bez błędu
+        if (!s.want) return;
         var now = Date.now();
         if (el.currentTime > lastT + 0.05) { lastT = el.currentTime; lastCheck = now; }
-        else if (lastCheck && now - lastCheck > 8000) { lastCheck = now; retry('Brak dźwięku od 8 s'); }
+        else if (lastCheck && now - lastCheck > 12000) { lastCheck = now; retry(el.currentTime > 0 ? 'Brak dźwięku' : 'Serwer nie odpowiada'); }
       }, 3000);
     });
   }
   function toggle(key) {
     var s = STREAMS.filter(function (x) { return x.key === key; })[0]; if (!s) return;
     if (s.want) { s.want = false; s.el.pause(); s.el.removeAttribute('src'); s.el.load(); s.ui(); return; }
-    s.want = true; s.tries = 0; $('st-' + s.key).textContent = 'Łączenie…';
+    s.want = true; s.tries = 0; s.reset(); $('st-' + s.key).textContent = 'Łączenie…';
     s.el.src = W + '/audio?url=' + encodeURIComponent(s.url);
     s.el.play().catch(function () { s.want = false; $('st-' + s.key).textContent = 'Nie udało się włączyć – spróbuj ponownie'; s.ui(); });
     s.ui(); mediaSession();
-  }
-  function vu(s) {   // prosty wskaźnik poziomu (Web Audio) – gdy się nie da, zostaje sam dźwięk
-    try {
-      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-      if (actx.state === 'suspended') actx.resume();
-      if (!s.an) {
-        var src = actx.createMediaElementSource(s.el);
-        s.an = actx.createAnalyser(); s.an.fftSize = 64;
-        src.connect(s.an); s.an.connect(actx.destination);
-      }
-      var bars = $('pl-' + s.key).querySelectorAll('.vu i'), buf = new Uint8Array(s.an.frequencyBinCount);
-      (function loop() {
-        if (!s.want || s.el.paused) { bars.forEach(function (b) { b.style.height = '8%'; }); return; }
-        if (current === 'nasluch' && active()) {
-          s.an.getByteFrequencyData(buf);
-          bars.forEach(function (b, i) { var v = buf[2 + i * 3] / 255; b.style.height = Math.max(8, Math.round(v * 100)) + '%'; });
-        }
-        setTimeout(loop, 120);
-      })();
-    } catch (e) { /* bez wskaźnika */ }
   }
   function playing() { return STREAMS.filter(function (s) { return s.want; }); }
   function updateMini() {

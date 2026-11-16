@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-16
+- Nasłuch w aplikacji: bez Web Audio i wskaźnika poziomu (w WebView Androida wstrzymany AudioContext wyciszał dźwięk) – zwykły odtwarzacz, animowany znacznik „gra”. Limit 12 s na połączenie/ciszę, 4 próby, potem komunikat „Strumień LiveATC chwilowo niedostępny” (wcześniej Approach/Delivery wisiały na „Buforowanie…”).
 - Powiadomienie o nowej wersji: temat push `aktualizacje` (zawsze włączony, bez przełącznika). Worker strony co 2 h (4–20 UTC) sprawdza najnowsze wydanie na GitHubie i raz wysyła push; w aplikacji pasek „Dostępna nowa wersja” + arkusz z pobraniem APK (także dla osób bez zgody na powiadomienia), „Więcej → Sprawdź aktualizację”, w „O aplikacji” wersja APK.
 - Poprawka: mapa (warstwy Leaflet) zasłaniała ekran powitalny z wyborem powiadomień – `.mapwrap` izoluje warstwy.
 - Zakładka Radar → Pogoda: tabele METAR, Opady i SIGMET pod mapą zamiast na niej (moduł pogody `opts.dock`, `pogoda.js?v=5`).
