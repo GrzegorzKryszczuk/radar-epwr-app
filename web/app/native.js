@@ -202,8 +202,9 @@
     plugin('FirebaseMessaging').then(function (F) {
       if (!F) return;
       F.addListener('notificationActionPerformed', function (ev) {
-        var d = ev && ev.notification && ev.notification.data;
-        openTarget(safeTarget(d && d.url));
+        var d = ev && ev.notification && ev.notification.data, t = safeTarget(d && d.url);
+        openTarget(t);
+        if (t) setTimeout(function () { document.dispatchEvent(new CustomEvent('app:pushopen', { detail: t })); }, 0);
       });
       // Powiadomienie przy otwartej aplikacji: Android go nie pokazuje – dajemy komunikat i odświeżamy dane
       F.addListener('notificationReceived', function (ev) {

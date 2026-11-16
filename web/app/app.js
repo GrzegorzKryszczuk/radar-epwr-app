@@ -555,7 +555,7 @@
         updateMini();
       }
       s.ui = ui;
-      el.addEventListener('playing', function () { s.tries = 0; s.started = Date.now(); st('Na żywo'); ui(); });
+      el.addEventListener('playing', function () { s.tries = 0; if (!s.started) s.started = Date.now(); st('Na żywo'); ui(); });
       el.addEventListener('waiting', function () { st('Buforowanie…'); });
       el.addEventListener('pause', function () { if (!s.want) st(s.sub); ui(); });
       function retry(why) {
@@ -579,7 +579,12 @@
   }
   function toggle(key) {
     var s = STREAMS.filter(function (x) { return x.key === key; })[0]; if (!s) return;
-    if (s.want) { s.want = false; s.el.pause(); s.el.removeAttribute('src'); s.el.load(); s.ui(); return; }
+    if (s.want) {
+      var mins = s.started ? Math.round((Date.now() - s.started) / MIN) : 0; s.started = 0;
+      s.want = false; s.el.pause(); s.el.removeAttribute('src'); s.el.load(); s.ui();
+      if (mins >= 10) coffeeMoment('Słuchałeś ' + s.name.replace('EPWR ', '') + ' przez ' + mins + ' min 🎧');
+      return;
+    }
     s.want = true; s.tries = 0; s.reset(); $('st-' + s.key).textContent = 'Łączenie…';
     s.el.src = W + '/audio?url=' + encodeURIComponent(s.url);
     s.el.play().catch(function () { s.want = false; $('st-' + s.key).textContent = 'Nie udało się włączyć – spróbuj ponownie'; s.ui(); });
@@ -682,16 +687,45 @@
   var runs = +(lsGet('app.runs') || 0) + 1; lsSet('app.runs', String(runs));
   if (!lsGet('app.moreSeen')) $('moreBadge').hidden = false;
   document.addEventListener('app:view', function (e) { if (e.detail === 'wiecej') { lsSet('app.moreSeen', '1'); $('moreBadge').hidden = true; renderTopics(); } });
-  function coffeeSheet(lead) {
-    lsSet('app.coffeeAsk', String(Date.now()));
-    openSheet('☕ Postaw kawę Radarowi',
-      '<p>' + esc(lead) + '</p><p>Radar EPWR jest <b>bezpłatny i bez reklam</b>. Utrzymanie serwera, nasłuchu ATC i danych o lotach kosztuje – jeśli aplikacja Ci się przydaje, możesz wesprzeć projekt dowolną kwotą na buycoffee.to.</p>' +
-      '<div class="acts"><a class="btn coffee" href="' + CFG.coffee + '" data-coffee>Postaw kawę na buycoffee.to</a><button type="button" class="btn ghost" id="shLater">Może później</button></div>',
-      function (b) { b.querySelector('#shLater').addEventListener('click', closeSheet); });
+  // Prośba o wsparcie – nienachalnie: karta W TREŚCI ekranu (nigdy okno, nigdy na mapie), tylko po dobrym momencie
+  // (długi nasłuch, otwarty alarm z powiadomienia, udostępnienie). Zasady: od 5. uruchomienia, najwyżej raz na 30 dni
+  // (łącznie ze wszystkich miejsc), nie w trakcie alarmu; „Już wsparłem 💜” wycisza prośby na 7 dni.
+  var COFFEE_EVERY = 30 * 24 * 60 * MIN, COFFEE_THANKS = 7 * 24 * 60 * MIN;
+  var coffeePending = null;
+  function coffeeAllowed() {
+    if (runs < 5) return false;
+    if (Date.now() - +(lsGet('app.coffeeAsk') || 0) < COFFEE_EVERY) return false;
+    if (Date.now() - +(lsGet('app.coffeeThanks') || 0) < COFFEE_THANKS) return false;
+    return $('abar').hidden;   // trwa alarm – nie prosimy
   }
-  function coffeeDue() { return Date.now() - +(lsGet('app.coffeeAsk') || 0) > 30 * 24 * 60 * MIN; }
-  function coffeeAfterShare() { if (runs >= 3 && coffeeDue()) setTimeout(function () { coffeeSheet('Dzięki za udostępnienie! 💜'); }, 900); }
-  if (runs >= 5 && coffeeDue() && N.push.hasChoice()) setTimeout(function () { if ($('sheet').hidden) coffeeSheet('Miło, że jesteś z nami!'); }, 45000);
+  function coffeeMoment(lead) {
+    if (!coffeeAllowed()) return;
+    coffeePending = lead;
+    if (current !== 'radar') coffeeShow();   // na Radarze czekamy, aż użytkownik przejdzie na inny ekran
+  }
+  function coffeeShow() {
+    if (!coffeePending || current === 'radar' || !coffeeAllowed()) return;
+    var lead = coffeePending; coffeePending = null;
+    lsSet('app.coffeeAsk', String(Date.now()));
+    var old = document.querySelector('.cask'); if (old) old.remove();
+    var el = document.createElement('div');
+    el.className = 'cask'; el.setAttribute('role', 'note');
+    el.innerHTML = '<button type="button" class="x" data-cask="close" aria-label="Zamknij">×</button>' +
+      '<p><b>' + esc(lead) + '</b> Radar EPWR jest bezpłatny i bez reklam – jeśli Ci się przydaje, postaw kawę na utrzymanie serwera i nasłuchu.</p>' +
+      '<div class="cask-a"><a class="btn sm coffee" href="' + esc(CFG.coffee) + '" data-coffee>☕ Postaw kawę</a>' +
+      '<button type="button" class="btn sm ghost" data-cask="thanks">Już wsparłem 💜</button></div>';
+    var view = $('v-' + current), head = view.querySelector('.vhead');
+    if (head) head.after(el); else view.prepend(el);
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-cask], [data-coffee]'); if (!b) return;
+      if (b.dataset.cask === 'thanks') { lsSet('app.coffeeThanks', String(Date.now())); N.toast('Dziękujemy! 💜 Przez tydzień nie będziemy prosić.', 3500); }
+      el.remove();
+    });
+  }
+  document.addEventListener('app:view', function (e) { if (e.detail !== 'radar') coffeeShow(); });
+  function coffeeAfterShare() { coffeeMoment('Dzięki za udostępnienie! 💜'); }
+  // Otwarty alarm z powiadomienia → prośba przy następnym wejściu na inny ekran niż mapa
+  document.addEventListener('app:pushopen', function (e) { if (/hex=/.test(String(e.detail || ''))) coffeeMoment('Dzięki, że śledzisz alarmy z EPWR 🚨'); });
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-coffee]')) lsSet('app.coffeeAsk', String(Date.now())); });
 
   // ===================== Aktualizacja aplikacji (APK z GitHub Releases) =====================
