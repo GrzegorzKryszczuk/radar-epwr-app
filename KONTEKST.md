@@ -20,7 +20,7 @@ Aktualizacja: 2026-11-16
 - Wersja tagu MUSI być wyższa od poprzedniej (semver), inaczej brak push. Zmiany samych ekranów (`web/`) nie wymagają APK.
 - `pobrania.yml`: poniedziałek 6:00 UTC komentarz z liczbą pobrań w zgłoszeniu „Statystyki pobrań aplikacji” (e-mail z GitHuba; znacznik `<!-- total:N -->`).
 
-- Nasłuch w aplikacji: zwykły <audio> BEZ Web Audio/crossOrigin (AudioContext poza gestem wyciszał dźwięk w WebView); Worker przepuszcza po Referer. Approach/Delivery (d.liveatc.net → s1-bos) 16.11 nie odpowiadały – problem po stronie LiveATC.
+- Nasłuch w aplikacji: zwykły <audio> BEZ Web Audio/crossOrigin (AudioContext poza gestem wyciszał dźwięk w WebView); Worker przepuszcza po Referer. Od 18.11 źródłem strumieni jest airband.kosma.pl (OPOS; epwr_twr/app2/del) zamiast LiveATC (od 16.11 nie odpowiadał przez nasz Worker); powłoka Capacitor ładuje https://radar-epwr.pl/app/, więc nowy APK nie jest potrzebny.
 - Wybór tematów push: localStorage `app.topics` + ciasteczko `radar_topics` (native.js loadChoice/saveChoice).
 
 ## Pułapki

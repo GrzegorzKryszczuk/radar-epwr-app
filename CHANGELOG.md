@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-11-18
+- Nasłuch: strumienie z airband.kosma.pl (OPOS) zamiast LiveATC – Tower `epwr_twr`, Approach `epwr_app2`, Delivery `epwr_del` (przez Workera `/audio`); podpis źródła i komunikat błędu bez nazwy LiveATC. Aplikacja ładuje /app/ ze strony, więc bez nowego APK.
+
 ## 2026-11-16
 - Poprawka: w Pogodzie przewijane tabele wychodziły nad dolne menu (z-index kart w układzie flex) – dok izolowany, `z-index:auto`.
 - Wsparcie buycoffee.to – nienachalnie: stała linijka „☕ … dzięki wspierającym · Postaw kawę” pod Nasłuchem i Lotami; karta w treści ekranu (nie okno, nigdy na mapie) po dobrym momencie: nasłuch ≥ 10 min, otwarty alarm z powiadomienia, udostępnienie. Od 5. uruchomienia, raz na 30 dni, nie w trakcie alarmu; „Już wsparłem 💜” wycisza prośby na 7 dni. Usunięty arkusz wyskakujący po 45 s.

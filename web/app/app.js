@@ -531,9 +531,9 @@
 
   // ===================== NASŁUCH ATC =====================
   var STREAMS = [
-    { key: 'tower', name: 'EPWR Tower', sub: 'wieża – starty i lądowania', url: 'https://s1-fmt2.liveatc.net/epwr4_twr', c: '#FBBF24' },
-    { key: 'approach', name: 'EPWR Approach', sub: 'zbliżanie – podejścia i odloty', url: 'http://d.liveatc.net/epwr4_app2', c: '#FDE047' },
-    { key: 'delivery', name: 'EPWR Delivery', sub: 'zezwolenia przed startem', url: 'http://d.liveatc.net/epwr4_del', c: '#CA8A04' }
+    { key: 'tower', name: 'EPWR Tower', sub: 'wieża – starty i lądowania', url: 'https://airband.kosma.pl/epwr_twr', c: '#FBBF24' },
+    { key: 'approach', name: 'EPWR Approach', sub: 'zbliżanie – podejścia i odloty', url: 'https://airband.kosma.pl/epwr_app2', c: '#FDE047' },
+    { key: 'delivery', name: 'EPWR Delivery', sub: 'zezwolenia przed startem', url: 'https://airband.kosma.pl/epwr_del', c: '#CA8A04' }
   ];
   var PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>', STOP = '<svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>';
   function playerUi() {
@@ -560,7 +560,7 @@
       el.addEventListener('pause', function () { if (!s.want) st(s.sub); ui(); });
       function retry(why) {
         if (!s.want) return;
-        if (++s.tries > 4) { s.want = false; el.pause(); el.removeAttribute('src'); el.load(); st('Strumień LiveATC chwilowo niedostępny – spróbuj później'); ui(); return; }
+        if (++s.tries > 4) { s.want = false; el.pause(); el.removeAttribute('src'); el.load(); st('Strumień nasłuchu chwilowo niedostępny – spróbuj później'); ui(); return; }
         var d = Math.min(2000 * Math.pow(1.5, s.tries - 1), 15000);
         st(why + ' – ponawiam za ' + Math.round(d / 1000) + ' s…');
         setTimeout(function () { if (s.want) { s.reset(); el.src = W + '/audio?url=' + encodeURIComponent(s.url); el.play().catch(function () {}); } }, d);
@@ -569,7 +569,7 @@
       el.addEventListener('ended', function () { retry('Strumień się zakończył'); });
       var lastT = -1, lastCheck = 0;
       s.reset = function () { lastT = -1; lastCheck = Date.now(); };
-      setInterval(function () {   // strażnik: brak połączenia (LiveATC nie odpowiada) albo strumień „zamarł” bez błędu
+      setInterval(function () {   // strażnik: brak połączenia (źródło nie odpowiada) albo strumień „zamarł” bez błędu
         if (!s.want) return;
         var now = Date.now();
         if (el.currentTime > lastT + 0.05) { lastT = el.currentTime; lastCheck = now; }
