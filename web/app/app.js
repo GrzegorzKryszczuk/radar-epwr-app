@@ -531,9 +531,15 @@
 
   // ===================== NASŁUCH ATC =====================
   var STREAMS = [
-    { key: 'tower', name: 'EPWR Tower', sub: 'wieża – starty i lądowania', url: 'https://airband.kosma.pl/epwr_twr', c: '#FBBF24' },
-    { key: 'approach', name: 'EPWR Approach', sub: 'zbliżanie – podejścia i odloty', url: 'https://airband.kosma.pl/epwr_app2', c: '#FDE047' },
-    { key: 'delivery', name: 'EPWR Delivery', sub: 'zezwolenia przed startem', url: 'https://airband.kosma.pl/epwr_del', c: '#CA8A04' }
+    { key: 'tower', name: 'EPWR Tower', sub: 'wieża – starty i lądowania · 120,255', url: 'https://airband.kosma.pl/epwr_twr', c: '#FBBF24' },
+    { key: 'approach', name: 'Approach #2 (Poznań)', sub: 'zbliżanie · 128,925', url: 'https://airband.kosma.pl/epwr_app2', c: '#FDE047' },
+    { key: 'delivery', name: 'EPWR Delivery', sub: 'zezwolenia przed startem · 121,805', url: 'https://airband.kosma.pl/epwr_del', c: '#CA8A04' },
+    { key: 'app1', name: 'Approach #1 (Poznań)', sub: '123,040 · gra kanał „Wszystko oprócz ATIS”', url: 'https://airband.kosma.pl/epwr_all', c: '#C4B5FD' },
+    { key: 'fisn', name: 'FIS północ (Poznań)', sub: '126,300 · gra kanał „Wszystko oprócz ATIS”', url: 'https://airband.kosma.pl/epwr_all', c: '#86EFAC' },
+    { key: 'fiss', name: 'FIS południe (Poznań)', sub: 'informacja · 127,250', url: 'https://airband.kosma.pl/epwr_fis_s', c: '#6EE7B7' },
+    { key: 'guard', name: 'Guard', sub: 'częstotliwość awaryjna · 121,500', url: 'https://airband.kosma.pl/epwr_guard', c: '#FB7185' },
+    { key: 'atis', name: 'ATIS', sub: 'komunikat pogodowy · 124,330', url: 'https://airband.kosma.pl/epwr_atis', c: '#E2E8F0' },
+    { key: 'all', name: 'Wszystko oprócz ATIS', sub: 'kilka kanałów naraz', url: 'https://airband.kosma.pl/epwr_all', c: '#F0ABFC' }
   ];
   var PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>', STOP = '<svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>';
   function playerUi() {
