@@ -561,12 +561,14 @@
         updateMini();
       }
       s.ui = ui;
-      el.addEventListener('playing', function () { s.tries = 0; if (!s.started) s.started = Date.now(); st('Na żywo'); ui(); });
+      // Twarde zatrzymanie: pauza + usunięcie źródła + load() (przerywa też strumień, który dopiero się łączy)
+      s.kill = function () { try { el.pause(); } catch (e) {} el.removeAttribute('src'); try { el.load(); } catch (e) {} };
+      el.addEventListener('playing', function () { if (!s.want) { s.kill(); return; } s.tries = 0; if (!s.started) s.started = Date.now(); st('Na żywo'); ui(); });
       el.addEventListener('waiting', function () { st('Buforowanie…'); });
       el.addEventListener('pause', function () { if (!s.want) st(s.sub); ui(); });
       function retry(why) {
         if (!s.want) return;
-        if (++s.tries > 4) { s.want = false; el.pause(); el.removeAttribute('src'); el.load(); st('Strumień nasłuchu chwilowo niedostępny – spróbuj później'); ui(); return; }
+        if (++s.tries > 4) { s.want = false; s.kill(); st('Strumień nasłuchu chwilowo niedostępny – spróbuj później'); ui(); return; }
         var d = Math.min(2000 * Math.pow(1.5, s.tries - 1), 15000);
         st(why + ' – ponawiam za ' + Math.round(d / 1000) + ' s…');
         setTimeout(function () { if (s.want) { s.reset(); el.src = W + '/audio?url=' + encodeURIComponent(s.url); el.play().catch(function () {}); } }, d);
@@ -576,7 +578,7 @@
       var lastT = -1, lastCheck = 0;
       s.reset = function () { lastT = -1; lastCheck = Date.now(); };
       setInterval(function () {   // strażnik: brak połączenia (źródło nie odpowiada) albo strumień „zamarł” bez błędu
-        if (!s.want) return;
+        if (!s.want) { if (!el.paused || el.getAttribute('src')) s.kill(); return; }   // wyłączony, a coś jeszcze gra → zatrzymaj
         var now = Date.now();
         if (el.currentTime > lastT + 0.05) { lastT = el.currentTime; lastCheck = now; }
         else if (lastCheck && now - lastCheck > 12000) { lastCheck = now; retry(el.currentTime > 0 ? 'Brak dźwięku' : 'Serwer nie odpowiada'); }
@@ -587,7 +589,7 @@
     var s = STREAMS.filter(function (x) { return x.key === key; })[0]; if (!s) return;
     if (s.want) {
       var mins = s.started ? Math.round((Date.now() - s.started) / MIN) : 0; s.started = 0;
-      s.want = false; s.el.pause(); s.el.removeAttribute('src'); s.el.load(); s.ui();
+      s.want = false; s.kill(); s.ui();
       if (mins >= 10) coffeeMoment('Słuchałeś ' + s.name.replace('EPWR ', '') + ' przez ' + mins + ' min 🎧');
       return;
     }
