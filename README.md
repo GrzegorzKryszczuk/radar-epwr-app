@@ -37,7 +37,7 @@ Autentyczność pliku sprawdzisz sumą SHA-256 z pliku `radar-epwr.apk.sha256` w
 
 ## Prywatność
 
-Aplikacja nie ma reklam, analityki ani kont. Powiadomienia działają przez tematy FCM bez zapisywania tokenów.
+Aplikacja nie ma banerów reklamowych, analityki ani kont; w oknie lotu są oznaczone linki partnerskie (AirHelp, Kiwitaxi). Powiadomienia działają przez tematy FCM bez zapisywania tokenów.
 Polityka: https://radar-epwr.pl/app/prywatnosc.html
 
 ## Rozwój

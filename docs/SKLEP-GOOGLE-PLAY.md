@@ -6,7 +6,7 @@
 
 **Pełny opis (max 4000):**
 ```
-Radar EPWR to bezpłatny radar lotniska Wrocław (EPWR) – stworzony z pasji przez miłośnika lotnictwa, bez reklam i bez zakładania konta.
+Radar EPWR to bezpłatny radar lotniska Wrocław (EPWR) – stworzony z pasji przez miłośnika lotnictwa, bez zakładania konta i bez banerów reklamowych.
 
 ✈️ RADAR NA ŻYWO
 Samoloty w promieniu ok. 110 km od Wrocławia: znak wywoławczy, wysokość, prędkość, kurs, typ i zdjęcie maszyny. Stuknij samolot – zobaczysz jego ślad w kolorach wysokości, trasę i szczegóły.
@@ -35,6 +35,8 @@ Wyślij znajomym link do lotu – otworzą go w przeglądarce, bez instalowania 
 ☕ Aplikacja jest bezpłatna. Jeśli Ci się przydaje, możesz wesprzeć projekt na buycoffee.to/radar-epwr.
 
 Ważne: dane pochodzą z publicznych źródeł (ADS-B: adsb.lol, ODbL) i automatycznej analizy – mogą zawierać błędy. Aplikacja nie służy do nawigacji ani celów operacyjnych. Projekt niezależny, niezwiązany z Portem Lotniczym Wrocław ani PAŻP.
+
+Reklama i linki partnerskie: w oknie lotu aplikacja może pokazać oznaczony link partnerski (AirHelp – odszkodowanie za opóźniony lot, Kiwitaxi – transfer z lotniska). Jeśli z niego skorzystasz, możemy otrzymać prowizję; Ty nie płacisz więcej.
 ```
 
 **Kategoria:** Podróże i informacje lokalne (alternatywa: Pogoda). **Tagi:** lotnictwo, radar, loty.
@@ -57,7 +59,7 @@ Ważne: dane pochodzą z publicznych źródeł (ADS-B: adsb.lol, ODbL) i automat
 - Uwaga: Firebase Messaging jest SDK Google – Google traktuje token FCM jako „Identyfikator urządzenia”. Analytics/Crashlytics: **nie używamy** (wyłączone w manifeście).
 
 ## Pozostałe formularze
-- **Reklamy:** nie zawiera reklam.
+- **Reklamy:** zaznacz „Zawiera reklamy” – w oknie lotu są linki partnerskie (AirHelp, Kiwitaxi), oznaczone „Reklama · partner”.
 - **Dostęp do aplikacji:** wszystkie funkcje dostępne bez logowania.
 - **Klasyfikacja treści (IARC):** brak przemocy/treści wrażliwych → PEGI 3 / „Dla wszystkich”.
 - **Grupa docelowa:** 13+ (nie kierowana do dzieci).

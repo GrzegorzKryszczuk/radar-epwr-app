@@ -734,7 +734,7 @@
     var el = document.createElement('div');
     el.className = 'cask'; el.setAttribute('role', 'note');
     el.innerHTML = '<button type="button" class="x" data-cask="close" aria-label="Zamknij">×</button>' +
-      '<p><b>' + esc(lead) + '</b> Radar EPWR jest bezpłatny i bez reklam – jeśli Ci się przydaje, postaw kawę na utrzymanie serwera i nasłuchu.</p>' +
+      '<p><b>' + esc(lead) + '</b> Radar EPWR jest bezpłatny i bez banerów reklamowych (w oknie lotu są tylko oznaczone linki partnerskie) – jeśli Ci się przydaje, postaw kawę na utrzymanie serwera i nasłuchu.</p>' +
       '<div class="cask-a"><a class="btn sm coffee" href="' + esc(CFG.coffee) + '" data-coffee>☕ Postaw kawę</a>' +
       '<button type="button" class="btn sm ghost" data-cask="thanks">Już wsparłem 💜</button></div>';
     var view = $('v-' + current), head = view.querySelector('.vhead');
