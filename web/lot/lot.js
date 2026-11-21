@@ -69,7 +69,7 @@
   }
   // Baner partnerski (Travelpayouts, sub ID „app”): AirHelp przy odwołaniu lub opóźnieniu >= 45 min, Kiwitaxi przy przylocie.
   // Zwykły link otwierany w przeglądarce (śledzenie partnera działa tylko w przeglądarce), bez skryptów.
-  var AIRHELP = 'https://airhelp.tpk.lv/HYjJWtoC', KIWITAXI = 'https://kiwitaxi.tpk.lv/WQGwGVIb';
+  var AIRHELP = 'https://airhelp.tpk.lv/HYjJWtoC', KIWITAXI = 'https://kiwitaxi.tpk.lv/WQGwGVIb?u=https%3A%2F%2Fkiwitaxi.com%2Fpl';
   function partner(f) {
     var box = $('lPartner'); if (!box || !f) return;
     var leg = (kind === 'dep' ? f.departure : f.arrival) || {};

@@ -375,7 +375,7 @@
   }
   // Baner partnerski w karcie lotu (Travelpayouts, sub ID „app”): AirHelp przy odwołaniu/opóźnieniu >= 45 min, Kiwitaxi przy przylocie.
   // Zwykły link – native.js otwiera go w karcie przeglądarki (śledzenie partnera działa w przeglądarce). Bez skryptów.
-  var AIRHELP = 'https://airhelp.tpk.lv/HYjJWtoC', KIWITAXI = 'https://kiwitaxi.tpk.lv/WQGwGVIb';
+  var AIRHELP = 'https://airhelp.tpk.lv/HYjJWtoC', KIWITAXI = 'https://kiwitaxi.tpk.lv/WQGwGVIb?u=https%3A%2F%2Fkiwitaxi.com%2Fpl';
   function partnerHtml(f, isDep) {
     var leg = (isDep ? f.departure : f.arrival) || {}, bad = f.flight_status === 'cancelled' || (leg.delay || 0) >= 45, p;
     if (bad) p = { c: 'airhelp', h: AIRHELP, img: '/partnerzy/airhelp-logo.svg', alt: 'AirHelp', w: 78, ht: 26,

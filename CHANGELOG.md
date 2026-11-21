@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-21
+- Linki Kiwitaxi (`web/app/app.js`, `web/lot/lot.js`) prowadzą na polską wersję strony: do `kiwitaxi.tpk.lv/...` dodano `?u=https%3A%2F%2Fkiwitaxi.com%2Fpl`. AirHelp bez zmian: link `airhelp.tpk.lv` ignoruje parametr `u` i zawsze otwiera angielską stronę (`en-int`, produkt AirHelp Plus); program AirHelp nie ma w Travelpayouts opcji własnego adresu docelowego.
 - POPRAWKA TEKSTÓW: usunięto nieprawdziwe „bez reklam” – teksty mówią teraz „bez banerów reklamowych” + informacja o oznaczonych linkach partnerskich (AirHelp, Kiwitaxi, „Reklama · partner”, możliwa prowizja): `web/pobierz/index.html`, `web/app/index.html`, `web/app/app.js` (okno „Postaw kawę”), `web/app/prywatnosc.html`, `README.md`, `docs/SKLEP-GOOGLE-PLAY.md` (opis sklepu + „Zawiera reklamy”).
 - POPRAWKA: banery partnerskie były tylko na stronie udostępnionego lotu `/lot/`, a w aplikacji lot otwiera się w oknie `flightSheet` (`web/app/app.js`). Dodane tam: `partnerHtml()` (AirHelp przy odwołaniu lub opóźnieniu ≥ 45 min wg `leg.delay`, Kiwitaxi przy przylocie niewylądowanym), style `.pb*` w `app.css`; link otwiera się w karcie przeglądarki przez `native.js`. app.css?v=7, app.js?v=8.
 - Ekran lotu (`web/lot`): warunkowy baner partnerski Travelpayouts (sub ID „app”) pod kartą lotu – AirHelp przy odwołaniu lub opóźnieniu ≥ 45 min, Kiwitaxi przy przylocie (poza wylądowanymi). Zwykły link `target=_blank` (śledzenie partnera tylko w przeglądarce), bez skryptów; logo z `https://radar-epwr.pl/partnerzy/`. Oznaczenie „Reklama · partner”. Nowy APK niepotrzebny.
