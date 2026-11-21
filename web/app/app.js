@@ -373,6 +373,21 @@
       return hit ? hit.hex : null;
     });
   }
+  // Baner partnerski w karcie lotu (Travelpayouts, sub ID „app”): AirHelp przy odwołaniu/opóźnieniu >= 45 min, Kiwitaxi przy przylocie.
+  // Zwykły link – native.js otwiera go w karcie przeglądarki (śledzenie partnera działa w przeglądarce). Bez skryptów.
+  var AIRHELP = 'https://airhelp.tpk.lv/HYjJWtoC', KIWITAXI = 'https://kiwitaxi.tpk.lv/WQGwGVIb';
+  function partnerHtml(f, isDep) {
+    var leg = (isDep ? f.departure : f.arrival) || {}, bad = f.flight_status === 'cancelled' || (leg.delay || 0) >= 45, p;
+    if (bad) p = { c: 'airhelp', h: AIRHELP, img: '/partnerzy/airhelp-logo.svg', alt: 'AirHelp', w: 78, ht: 26,
+      t: f.flight_status === 'cancelled' ? 'Lot odwołany?' : 'Lot opóźniony?',
+      s: 'Sprawdź, czy należy Ci się odszkodowanie do 600 € za lot w UE. Kilka minut i bez ryzyka.', b: 'Sprawdź swoje prawa' };
+    else if (!isDep && f.flight_status !== 'landed' && !DONE[f.flight_status]) p = { c: 'kiwitaxi', h: KIWITAXI, img: '/partnerzy/kiwitaxi-logo.svg', alt: 'Kiwitaxi', w: 30, ht: 26,
+      t: 'Odbierasz kogoś z lotniska?', s: 'Zamów transfer z góry po stałej cenie. Kierowca czeka na przylocie.', b: 'Zamów transfer' };
+    else return '';
+    return '<a class="pb pb-' + p.c + '" href="' + p.h + '" target="_blank" rel="sponsored noopener" aria-label="' + esc(p.t + ' ' + p.s) + ' (reklama, otwiera się w przeglądarce)">' +
+      '<span class="pb-label">Reklama · partner</span><img class="pb-logo" src="' + p.img + '" alt="' + p.alt + '" width="' + p.w + '" height="' + p.ht + '">' +
+      '<strong class="pb-title">' + esc(p.t) + '</strong><span class="pb-sub">' + esc(p.s) + '</span><span class="pb-cta">' + esc(p.b) + ' →</span></a>';
+  }
   function flightSheet(f, isDep) {
     var leg = (isDep ? f.departure : f.arrival) || {}, other = (isDep ? f.arrival : f.departure) || {}, st = statusOf(f, isDep);
     var nr = flightNr(f), place = cityOf(other.airport) || other.iata || '—';
@@ -391,7 +406,7 @@
       (live ? '<button type="button" class="btn" id="shRadar">Pokaż na radarze</button>' : '') +
       '<button type="button" class="btn ghost" id="shShare"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1z"/></svg>Udostępnij lot</button>' +
       (odb.enabled && !isDep && !isDone(f, isDep) ? '<a class="btn ghost" href="' + esc(odb.url + '?dodaj=' + encodeURIComponent(pickKey)) + '">' + esc(odb.label) + '</a>' : '') +
-      '</div><p class="note">Godziny lokalne. Dane: ' + esc(f.source === 'avionio' ? 'Avionio' : 'FlightAware / Avionio') + ' – mogą się różnić od tablicy na lotnisku.</p>',
+      '</div>' + partnerHtml(f, isDep) + '<p class="note">Godziny lokalne. Dane: ' + esc(f.source === 'avionio' ? 'Avionio' : 'FlightAware / Avionio') + ' – mogą się różnić od tablicy na lotnisku.</p>',
       function (b) {
         b.querySelector('#shShare').addEventListener('click', function () { shareBoardFlight(f, isDep); });
         var r = b.querySelector('#shRadar');
