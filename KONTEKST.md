@@ -24,7 +24,7 @@ Aktualizacja: 2026-11-16
 - Wybór tematów push: localStorage `app.topics` + ciasteczko `radar_topics` (native.js loadChoice/saveChoice).
 
 ## Reklamy partnerskie (2026-11-21)
-- `web/lot/lot.js` `partner()`: AirHelp (odwołany/opóźniony ≥45 min) lub Kiwitaxi (przylot) pod kartą lotu; linki tpk.lv z sub ID „app”. Nie dawać na radar/nasłuch ani jako okna pełnoekranowe (zasady Play). W opisie sklepu dopisać linki partnerskie.
+- `web/lot/lot.js` `partner()`: AirHelp (odwołany/opóźniony ≥45 min) lub Kiwitaxi (przylot) pod kartą lotu; linki tpk.lv z sub ID „app”. Nie dawać na radar/nasłuch ani jako okna pełnoekranowe (zasady Play). Aplikacji jeszcze nie ma w Google Play – przy publikacji w opisie sklepu MUSI być zapis o linkach partnerskich/reklamach (treść w pamięci asystenta: „Aplikacja zawiera linki partnerskie (AirHelp, Kiwitaxi)… oznaczone «Reklama · partner»”) i zaznaczyć „zawiera reklamy”.
 
 ## Pułapki
 - `google-services.json` NIE w repo (publiczne) – tylko sekret.
