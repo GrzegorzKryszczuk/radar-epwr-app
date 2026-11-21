@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-11-21
+- Ekran lotu (`web/lot`): warunkowy baner partnerski Travelpayouts (sub ID „app”) pod kartą lotu – AirHelp przy odwołaniu lub opóźnieniu ≥ 45 min, Kiwitaxi przy przylocie (poza wylądowanymi). Zwykły link `target=_blank` (śledzenie partnera tylko w przeglądarce), bez skryptów; logo z `https://radar-epwr.pl/partnerzy/`. Oznaczenie „Reklama · partner”. Nowy APK niepotrzebny.
+
 ## 2026-11-18
 - Nasłuch: dziewięć wpisów kanałów (Tower 120,255, Delivery 121,805, Approach #1 123,040, Approach #2 128,925, FIS północ 126,300, FIS południe 127,250, Guard 121,500, ATIS 124,330, „Wszystko oprócz ATIS”); Approach #1 i FIS północ grają kanał zbiorczy (osobnych strumieni brak).
 - Nasłuch: strumienie z airband.kosma.pl (OPOS) zamiast LiveATC – Tower `epwr_twr`, Approach `epwr_app2`, Delivery `epwr_del` (przez Workera `/audio`); podpis źródła i komunikat błędu bez nazwy LiveATC. Aplikacja ładuje /app/ ze strony, więc bez nowego APK.

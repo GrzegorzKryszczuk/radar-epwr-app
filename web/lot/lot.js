@@ -67,6 +67,35 @@
       if (hit) map.select(hit.hex);
     }).catch(function () {});
   }
+  // Baner partnerski (Travelpayouts, sub ID „app”): AirHelp przy odwołaniu lub opóźnieniu >= 45 min, Kiwitaxi przy przylocie.
+  // Zwykły link otwierany w przeglądarce (śledzenie partnera działa tylko w przeglądarce), bez skryptów.
+  var AIRHELP = 'https://airhelp.tpk.lv/HYjJWtoC', KIWITAXI = 'https://kiwitaxi.tpk.lv/WQGwGVIb';
+  function partner(f) {
+    var box = $('lPartner'); if (!box || !f) return;
+    var leg = (kind === 'dep' ? f.departure : f.arrival) || {};
+    var sch = Date.parse(leg.scheduled), est = Date.parse(leg.actual || leg.estimated);
+    var late = sch && est ? (est - sch) / 60000 : 0;
+    var p = null;
+    if (f.flight_status === 'cancelled' || late >= 45) {
+      p = { cls: 'airhelp', href: AIRHELP, logo: '/partnerzy/airhelp-logo.svg', alt: 'AirHelp', w: 78, h: 26,
+        t: f.flight_status === 'cancelled' ? 'Lot odwołany?' : 'Lot opóźniony?',
+        s: 'Sprawdź, czy należy Ci się odszkodowanie do 600 € za lot w UE. Kilka minut i bez ryzyka.', c: 'Sprawdź swoje prawa' };
+    } else if (kind === 'arr' && f.flight_status !== 'landed') {
+      p = { cls: 'kiwitaxi', href: KIWITAXI, logo: '/partnerzy/kiwitaxi-logo.svg', alt: 'Kiwitaxi', w: 30, h: 26,
+        t: 'Odbierasz kogoś z lotniska?', s: 'Zamów transfer z góry po stałej cenie. Kierowca czeka na przylocie.', c: 'Zamów transfer' };
+    }
+    if (!p) { box.hidden = true; return; }
+    var a = document.createElement('a');
+    a.className = 'pb pb-' + p.cls; a.href = p.href; a.target = '_blank'; a.rel = 'sponsored noopener';
+    a.setAttribute('aria-label', p.t + ' ' + p.s + ' (reklama, otwiera się w przeglądarce)');
+    var lab = document.createElement('span'); lab.className = 'pb-label'; lab.textContent = 'Reklama · partner';
+    var img = document.createElement('img'); img.className = 'pb-logo'; img.src = p.logo; img.alt = p.alt; img.width = p.w; img.height = p.h;
+    var t = document.createElement('strong'); t.className = 'pb-title'; t.textContent = p.t;
+    var s = document.createElement('span'); s.className = 'pb-sub'; s.textContent = p.s;
+    var c = document.createElement('span'); c.className = 'pb-cta'; c.textContent = p.c + ' →';
+    [lab, img, t, s, c].forEach(function (e) { a.appendChild(e); });
+    box.textContent = ''; box.appendChild(a); box.hidden = false;
+  }
   function loadFlight() {
     fetch(W + '/flights').then(function (r) { return r.json(); }).then(function (d) {
       window.radarEpwrFids = { departures: d.departures || [], arrivals: d.arrivals || [] };
@@ -80,6 +109,7 @@
       var st = { scheduled: kind === 'dep' ? 'Planowy' : 'Oczekiwany', active: kind === 'dep' ? 'Odleciał' : 'W powietrzu', landed: kind === 'dep' ? 'Odleciał' : 'Wylądował', cancelled: 'Odwołany', diverted: 'Przekierowany' }[flight.flight_status] || '–';
       title((kind === 'dep' ? '🛫 ' : '🛬 ') + nr, routeTxt());
       kv([['Status', st], ['Linia', (flight.airline && flight.airline.name) || '–'], [kind === 'dep' ? 'Bramka' : 'Taśma', ((kind === 'dep' ? flight.departure : flight.arrival) || {})[kind === 'dep' ? 'gate' : 'baggage'] || '–']]);
+      partner(flight);
       findByFlight();
     }).catch(function () { title('Lot ' + nr, 'Rozkład chwilowo niedostępny.'); });
   }

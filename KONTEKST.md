@@ -23,6 +23,9 @@ Aktualizacja: 2026-11-16
 - Nasłuch w aplikacji: zwykły <audio> BEZ Web Audio/crossOrigin (AudioContext poza gestem wyciszał dźwięk w WebView); Worker przepuszcza po Referer. Od 18.11 źródłem strumieni jest airband.kosma.pl (OPOS; epwr_twr/app2/del) zamiast LiveATC (od 16.11 nie odpowiadał przez nasz Worker); powłoka Capacitor ładuje https://radar-epwr.pl/app/, więc nowy APK nie jest potrzebny.
 - Wybór tematów push: localStorage `app.topics` + ciasteczko `radar_topics` (native.js loadChoice/saveChoice).
 
+## Reklamy partnerskie (2026-11-21)
+- `web/lot/lot.js` `partner()`: AirHelp (odwołany/opóźniony ≥45 min) lub Kiwitaxi (przylot) pod kartą lotu; linki tpk.lv z sub ID „app”. Nie dawać na radar/nasłuch ani jako okna pełnoekranowe (zasady Play). W opisie sklepu dopisać linki partnerskie.
+
 ## Pułapki
 - `google-services.json` NIE w repo (publiczne) – tylko sekret.
 - Nie dodawać obcych skryptów na `/app/` (most natywny, CSP).
