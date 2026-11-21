@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-21
+- `.github/workflows/pobrania.yml`: podsumowanie pobrań APK zmienione z cotygodniowego (pon. 6:00 UTC) na codzienne o 22:00 czasu polskiego (crony 20:00 i 21:00 UTC + sprawdzenie godziny `Europe/Warsaw`, żeby działało latem i zimą); przyrost liczony od poprzedniego podsumowania.
 - Linki Kiwitaxi (`web/app/app.js`, `web/lot/lot.js`) prowadzą na polską wersję strony: do `kiwitaxi.tpk.lv/...` dodano `?u=https%3A%2F%2Fkiwitaxi.com%2Fpl`. AirHelp bez zmian: link `airhelp.tpk.lv` ignoruje parametr `u` i zawsze otwiera angielską stronę (`en-int`, produkt AirHelp Plus); program AirHelp nie ma w Travelpayouts opcji własnego adresu docelowego.
 - POPRAWKA TEKSTÓW: usunięto nieprawdziwe „bez reklam” – teksty mówią teraz „bez banerów reklamowych” + informacja o oznaczonych linkach partnerskich (AirHelp, Kiwitaxi, „Reklama · partner”, możliwa prowizja): `web/pobierz/index.html`, `web/app/index.html`, `web/app/app.js` (okno „Postaw kawę”), `web/app/prywatnosc.html`, `README.md`, `docs/SKLEP-GOOGLE-PLAY.md` (opis sklepu + „Zawiera reklamy”).
 - POPRAWKA: banery partnerskie były tylko na stronie udostępnionego lotu `/lot/`, a w aplikacji lot otwiera się w oknie `flightSheet` (`web/app/app.js`). Dodane tam: `partnerHtml()` (AirHelp przy odwołaniu lub opóźnieniu ≥ 45 min wg `leg.delay`, Kiwitaxi przy przylocie niewylądowanym), style `.pb*` w `app.css`; link otwiera się w karcie przeglądarki przez `native.js`. app.css?v=7, app.js?v=8.

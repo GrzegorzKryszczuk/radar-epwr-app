@@ -18,7 +18,7 @@ Aktualizacja: 2026-11-16
 ## Aktualizacje i statystyki (2026-11-16)
 - Nowe APK = tag `vX.Y.Z` → Release. Worker (repo strony, cron co 2 h 4–20 UTC) wykrywa nowy tag przez HEAD `releases/latest/download/radar-epwr.apk`, zapisuje w KV `app:release` i wysyła RAZ push na temat `aktualizacje` (wymagany w `config.js`). `GET /appver` → pasek aktualizacji w aplikacji (porównanie z versionName z `App.getInfo()`).
 - Wersja tagu MUSI być wyższa od poprzedniej (semver), inaczej brak push. Zmiany samych ekranów (`web/`) nie wymagają APK.
-- `pobrania.yml`: poniedziałek 6:00 UTC komentarz z liczbą pobrań w zgłoszeniu „Statystyki pobrań aplikacji” (e-mail z GitHuba; znacznik `<!-- total:N -->`).
+- `pobrania.yml`: codziennie ok. 22:00 czasu polskiego (dwa crony UTC 20:00/21:00 + strażnik godziny w skrypcie, lato/zima) komentarz z liczbą pobrań w zgłoszeniu „Statystyki pobrań aplikacji” (e-mail z GitHuba na adres powiadomień konta; znacznik `<!-- total:N -->`). Test ręczny: Actions → Podsumowanie pobrań → Run workflow.
 
 - Nasłuch w aplikacji: zwykły <audio> BEZ Web Audio/crossOrigin (AudioContext poza gestem wyciszał dźwięk w WebView); Worker przepuszcza po Referer. Od 18.11 źródłem strumieni jest airband.kosma.pl (OPOS; epwr_twr/app2/del) zamiast LiveATC (od 16.11 nie odpowiadał przez nasz Worker); powłoka Capacitor ładuje https://radar-epwr.pl/app/, więc nowy APK nie jest potrzebny.
 - Wybór tematów push: localStorage `app.topics` + ciasteczko `radar_topics` (native.js loadChoice/saveChoice).
