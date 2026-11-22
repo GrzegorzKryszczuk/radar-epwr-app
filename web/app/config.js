@@ -9,7 +9,7 @@
 (function () {
   'use strict';
   window.RADAR_APP_CONFIG = {
-    version: '1.1.1',                      // wersja ekranów aplikacji (widać ją w „Więcej → O aplikacji”)
+    version: '1.1.2',                      // wersja ekranów aplikacji (widać ją w „Więcej → O aplikacji”)
     worker: 'https://radar-epwr.festusus.workers.dev',
     site: 'https://radar-epwr.pl',
     coffee: 'https://buycoffee.to/radar-epwr',

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-22
+- 1.1.2: „Postaw kawę” i „Poleć aplikację” nie reagowały w aplikacji (wtyczki Browser/Share w WebView). buycoffee.to, wa.me i X otwierane przez system (jak Telegram/YouTube); „Poleć aplikację” pokazuje własne menu: WhatsApp, X, Telegram, Facebook, Inne aplikacje…, Kopiuj link.
 - „Więcej” (ekrany 1.1.1): usunięty kafel „Wieża EPWR – gra” (`features.gra.enabled=false`); „Postaw kawę Radarowi” → „Postaw kawę Twórcy” (buycoffee.to); kafel „Pełna tablica” otwiera ekran Loty w aplikacji; Społeczność: tylko YouTube, Telegram – alerty, Facebook (w tej kolejności).
 - „Poleć aplikację znajomym”: link w treści wiadomości (nie tylko w polu URL), do czasu publikacji w Google Play prowadzi na `radar-epwr.pl/pobierz/`; `native.js share()` ma zapasowy tor (Web Share → schowek), gdy wtyczka Share zawiedzie. Nowy APK niepotrzebny.
 

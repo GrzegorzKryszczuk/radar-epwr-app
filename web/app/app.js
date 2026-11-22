@@ -683,7 +683,21 @@
   // bo część aplikacji pomija osobne pole URL. Dopóki nie ma aplikacji w Google Play, wskazujemy stronę pobierania.
   $('shareApp').addEventListener('click', function () {
     var link = CFG.playPublished ? CFG.playStore : CFG.site + '/pobierz/';
-    N.share({ title: 'Radar EPWR', text: '✈️ Samoloty nad Wrocławiem na żywo, tablica lotów, nasłuch wieży i alarmy z lotniska – aplikacja Radar EPWR (bezpłatna): ' + link, dialog: 'Poleć aplikację' });
+    var txt = '✈️ Samoloty nad Wrocławiem na żywo, tablica lotów, nasłuch wieży i alarmy z lotniska – aplikacja Radar EPWR (bezpłatna): ' + link;
+    var q = encodeURIComponent(txt), u = encodeURIComponent(link);
+    // Własne menu z linkami https (system otwiera aplikację WhatsApp / X / Telegram / Facebook) – nie zależy od wtyczki Share.
+    openSheet('Poleć aplikację', '<div class="acts">' +
+      '<a class="btn ghost" data-ext href="https://wa.me/?text=' + q + '">WhatsApp</a>' +
+      '<a class="btn ghost" data-ext href="https://twitter.com/intent/tweet?text=' + q + '">X (Twitter)</a>' +
+      '<a class="btn ghost" data-ext href="https://t.me/share/url?url=' + u + '&text=' + encodeURIComponent('Radar EPWR – samoloty nad Wrocławiem na żywo') + '">Telegram</a>' +
+      '<a class="btn ghost" data-ext href="https://www.facebook.com/sharer/sharer.php?u=' + u + '">Facebook</a>' +
+      '<button type="button" class="btn ghost" id="shMore">Inne aplikacje…</button>' +
+      '<button type="button" class="btn ghost" id="shCopy">Kopiuj link</button></div>', function (b) {
+      b.querySelector('#shMore').addEventListener('click', function () { closeSheet(); N.share({ title: 'Radar EPWR', text: txt, dialog: 'Poleć aplikację' }); });
+      b.querySelector('#shCopy').addEventListener('click', function () {
+        (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(function () { N.toast('Link skopiowany'); closeSheet(); }, function () { N.toast('Link: ' + link, 6000); });
+      });
+    });
   });
 
   // Funkcje z planów (config.js → features): kafelki pojawiają się same po włączeniu

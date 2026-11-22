@@ -56,8 +56,8 @@
 
   // ---------- Linki zewnętrzne ----------
   // Telegram, YouTube, Facebook, Google Play → intencja Androida (otwiera ich aplikację, jeśli jest zainstalowana).
-  // Pozostałe (buycoffee.to, 7700.pl, podstrony radar-epwr.pl) → karta przeglądarki w aplikacji (Custom Tabs).
-  var APP_HOSTS = /(^|\.)(t\.me|telegram\.me|youtube\.com|youtu\.be|facebook\.com|play\.google\.com)$/i;
+  // buycoffee.to i linki udostępniania (wa.me, X) też idą przez system – bez wtyczki Browser. Pozostałe (7700.pl, podstrony radar-epwr.pl) → karta przeglądarki w aplikacji (Custom Tabs).
+  var APP_HOSTS = /(^|\.)(t\.me|telegram\.me|youtube\.com|youtu\.be|facebook\.com|play\.google\.com|buycoffee\.to|wa\.me|twitter\.com|x\.com)$/i;
   function openExternal(url) {
     var u;
     try { u = new URL(url, location.href); } catch (e) { return; }
