@@ -16,7 +16,7 @@
 <link rel="icon" href="/app/ikona-192.png">
 <link rel="apple-touch-icon" href="/app/ikona-192.png">
 <link rel="stylesheet" href="/app/app.css?v=7">
-<script src="/app/config.js?v=6"></script>
+<script src="/app/config.js?v=7"></script>
 <script src="/app/theme.js?v=6"></script>
 </head>
 <body>
@@ -128,7 +128,7 @@
     <h1 class="sr-only" id="wcH">Więcej</h1>
     <a class="coffee" href="https://buycoffee.to/radar-epwr" data-ext data-coffee>
       <span class="cup" aria-hidden="true">☕</span>
-      <span><b>Postaw kawę Radarowi</b><small>Aplikacja jest bezpłatna, bez banerów reklamowych. W oknie lotu są oznaczone linki partnerskie (AirHelp, Kiwitaxi). Serwer, nasłuch ATC i dane lotów kosztują – każda kawa pomaga utrzymać projekt.</small></span>
+      <span><b>Postaw kawę Twórcy</b><small>Aplikacja jest bezpłatna, bez banerów reklamowych. W oknie lotu są oznaczone linki partnerskie (AirHelp, Kiwitaxi). Serwer, nasłuch ATC i dane lotów kosztują – każda kawa pomaga utrzymać projekt.</small></span>
       <span class="go" aria-hidden="true">›</span>
     </a>
 
@@ -143,15 +143,14 @@
     <div class="tiles" id="tiles">
       <a class="tile" href="https://radar-epwr.pl/metar-epwr/" data-ext><span aria-hidden="true">🌤️</span><b>METAR po polsku</b><small>rozkodowana pogoda lotnicza</small></a>
       <a class="tile" href="https://radar-epwr.pl/nasluch-atc/" data-ext><span aria-hidden="true">🎧</span><b>Poradnik nasłuchu</b><small>frazeologia ATC</small></a>
-      <a class="tile" href="https://radar-epwr.pl/odloty-przyloty/" data-ext><span aria-hidden="true">🛫</span><b>Pełna tablica</b><small>wszystkie loty dnia</small></a>
+      <a class="tile" href="#loty" id="tileBoard"><span aria-hidden="true">🛫</span><b>Pełna tablica</b><small>wszystkie loty dnia</small></a>
       <a class="tile" href="https://7700.pl/" data-ext><span aria-hidden="true">🚨</span><b>7700.pl</b><small>alarmy squawk w Polsce</small></a>
     </div>
 
     <h2 class="sec">Społeczność</h2>
     <div class="social">
-      <a href="https://t.me/alertlotniskowroclaw" data-ext class="soc tg"><b>Telegram – alerty</b><small>Alert Lotnisko Wrocław</small></a>
-      <a href="https://t.me/RadarEpwr" data-ext class="soc tg"><b>Telegram</b><small>Radar EPWR</small></a>
       <a href="https://www.youtube.com/@radar-epwr-pl" data-ext class="soc yt"><b>YouTube</b><small>transmisje na żywo</small></a>
+      <a href="https://t.me/alertlotniskowroclaw" data-ext class="soc tg"><b>Telegram – alerty</b><small>Alert Lotnisko Wrocław</small></a>
       <a href="https://www.facebook.com/radarepwrpl" data-ext class="soc fb"><b>Facebook</b><small>radarepwrpl</small></a>
     </div>
     <button type="button" class="btn ghost full" id="shareApp">Poleć aplikację znajomym</button>
@@ -218,7 +217,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
-<script src="/app/native.js?v=6"></script>
-<script src="/app/app.js?v=8"></script>
+<script src="/app/native.js?v=7"></script>
+<script src="/app/app.js?v=9"></script>
 </body>
 </html>

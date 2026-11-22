@@ -85,10 +85,16 @@
   function share(o) {
     o = o || {};
     var text = o.text || '', url = o.url || location.href, title = o.title || 'Radar EPWR';
-    return plugin('Share').then(function (S) {
-      if (S) return S.share({ title: title, text: text, url: url, dialogTitle: o.dialog || 'Udostępnij' });
+    function fallback() {
       if (navigator.share) return navigator.share({ title: title, text: text, url: url });
       return navigator.clipboard.writeText((text ? text + ' ' : '') + url).then(function () { toast('Link skopiowany – wklej go, gdzie chcesz'); });
+    }
+    return plugin('Share').then(function (S) {
+      if (!S) return fallback();
+      return S.share({ title: title, text: text, url: url, dialogTitle: o.dialog || 'Udostępnij' }).catch(function (e) {
+        if (e && (e.name === 'AbortError' || /cancel/i.test(String(e.message || e)))) return;
+        return fallback();   // wtyczka zawiodła (np. niedostępna w tej wersji powłoki) → Web Share lub schowek
+      });
     }).catch(function (e) {
       if (e && (e.name === 'AbortError' || /cancel/i.test(String(e.message || e)))) return;   // użytkownik zamknął menu
       toast('Nie udało się udostępnić. Link: ' + url, 5000);

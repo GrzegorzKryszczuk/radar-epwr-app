@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-22
+- „Więcej” (ekrany 1.1.1): usunięty kafel „Wieża EPWR – gra” (`features.gra.enabled=false`); „Postaw kawę Radarowi” → „Postaw kawę Twórcy” (buycoffee.to); kafel „Pełna tablica” otwiera ekran Loty w aplikacji; Społeczność: tylko YouTube, Telegram – alerty, Facebook (w tej kolejności).
+- „Poleć aplikację znajomym”: link w treści wiadomości (nie tylko w polu URL), do czasu publikacji w Google Play prowadzi na `radar-epwr.pl/pobierz/`; `native.js share()` ma zapasowy tor (Web Share → schowek), gdy wtyczka Share zawiedzie. Nowy APK niepotrzebny.
+
 ## 2026-11-21
 - Licznik pobrań przeniesiony z GitHub Actions do n8n: usunięto `.github/workflows/pobrania.yml`; codzienny mail o 22:00 wysyła workflow n8n (szczegóły w `KONTEKST.md`). Powód: mail ma iść na wskazany adres przez SMTP, a nie przez powiadomienia GitHuba.
 - `.github/workflows/pobrania.yml`: podsumowanie pobrań APK zmienione z cotygodniowego (pon. 6:00 UTC) na codzienne o 22:00 czasu polskiego (crony 20:00 i 21:00 UTC + sprawdzenie godziny `Europe/Warsaw`, żeby działało latem i zimą); przyrost liczony od poprzedniego podsumowania.

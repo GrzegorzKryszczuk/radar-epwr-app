@@ -677,8 +677,13 @@
   $('setProc').checked = lsGet('app.startProc') === '1';
   $('setProc').addEventListener('change', function (e) { lsSet('app.startProc', e.target.checked ? '1' : '0'); });
 
+  $('tileBoard').addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); show('loty'); });
+
+  // Polecanie aplikacji: systemowe menu udostępniania (WhatsApp, X, Messenger, SMS…). Link idzie w treści wiadomości,
+  // bo część aplikacji pomija osobne pole URL. Dopóki nie ma aplikacji w Google Play, wskazujemy stronę pobierania.
   $('shareApp').addEventListener('click', function () {
-    N.share({ title: 'Radar EPWR', text: '✈️ Samoloty nad Wrocławiem na żywo, tablica lotów, nasłuch wieży i alarmy z lotniska – aplikacja Radar EPWR (bezpłatna):', url: CFG.playStore, dialog: 'Poleć aplikację' });
+    var link = CFG.playPublished ? CFG.playStore : CFG.site + '/pobierz/';
+    N.share({ title: 'Radar EPWR', text: '✈️ Samoloty nad Wrocławiem na żywo, tablica lotów, nasłuch wieży i alarmy z lotniska – aplikacja Radar EPWR (bezpłatna): ' + link, dialog: 'Poleć aplikację' });
   });
 
   // Funkcje z planów (config.js → features): kafelki pojawiają się same po włączeniu

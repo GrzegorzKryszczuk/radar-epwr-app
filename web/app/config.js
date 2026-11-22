@@ -9,7 +9,7 @@
 (function () {
   'use strict';
   window.RADAR_APP_CONFIG = {
-    version: '1.1.0',                      // wersja ekranów aplikacji (widać ją w „Więcej → O aplikacji”)
+    version: '1.1.1',                      // wersja ekranów aplikacji (widać ją w „Więcej → O aplikacji”)
     worker: 'https://radar-epwr.festusus.workers.dev',
     site: 'https://radar-epwr.pl',
     coffee: 'https://buycoffee.to/radar-epwr',
@@ -37,7 +37,7 @@
     // Funkcje z planów (pomysly.md, Aplikacja/KONCEPCJA.md). enabled:false = ukryte.
     features: {
       odbior: { enabled: false, url: 'https://radar-epwr.pl/panel/', label: 'Odbieram ten lot', desc: 'Powiadomimy Cię, kiedy wyjechać po pasażera.' },
-      gra: { enabled: true, url: 'https://gra.radar-epwr.pl', label: 'Wieża EPWR – gra', desc: 'Zostań kontrolerem ruchu na wrocławskim lotnisku.' },
+      gra: { enabled: false, url: 'https://gra.radar-epwr.pl', label: 'Wieża EPWR – gra', desc: 'Zostań kontrolerem ruchu na wrocławskim lotnisku.' },
       historia: { enabled: false, label: 'Historia lotów', desc: 'Ostatnio oglądane samoloty na urządzeniu.' },
       lotniska: { enabled: false, list: ['EPWR'], desc: 'Kolejne lotniska (skanerlotniczy.pl).' },
       widget: { enabled: false, desc: 'Widżet na ekran główny: najbliższy przylot / alarm (wymaga nowej wersji natywnej).' }
