@@ -82,7 +82,7 @@
         s: 'Sprawdź, czy należy Ci się odszkodowanie do 600 € za lot w UE. Kilka minut i bez ryzyka.', c: 'Sprawdź swoje prawa' };
     } else if (kind === 'arr' && f.flight_status !== 'landed') {
       p = { cls: 'kiwitaxi', href: KIWITAXI, logo: '/partnerzy/kiwitaxi-logo.svg', alt: 'Kiwitaxi', w: 30, h: 26,
-        t: 'Odbierasz kogoś z lotniska?', s: 'Zamów transfer z góry po stałej cenie. Kierowca czeka na przylocie.', c: 'Zamów transfer' };
+        t: 'Odbierasz kogoś z lotniska?', s: 'Zamów transfer z góry po stałej cenie. Kierowca czeka po przylocie.', c: 'Zamów transfer' };
     }
     if (!p) { box.hidden = true; return; }
     var a = document.createElement('a');

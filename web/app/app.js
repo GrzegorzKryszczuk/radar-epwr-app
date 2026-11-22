@@ -382,7 +382,7 @@
       t: f.flight_status === 'cancelled' ? 'Lot odwołany?' : 'Lot opóźniony?',
       s: 'Sprawdź, czy należy Ci się odszkodowanie do 600 € za lot w UE. Kilka minut i bez ryzyka.', b: 'Sprawdź swoje prawa' };
     else if (!isDep && f.flight_status !== 'landed' && !DONE[f.flight_status]) p = { c: 'kiwitaxi', h: KIWITAXI, img: '/partnerzy/kiwitaxi-logo.svg', alt: 'Kiwitaxi', w: 30, ht: 26,
-      t: 'Odbierasz kogoś z lotniska?', s: 'Zamów transfer z góry po stałej cenie. Kierowca czeka na przylocie.', b: 'Zamów transfer' };
+      t: 'Odbierasz kogoś z lotniska?', s: 'Zamów transfer z góry po stałej cenie. Kierowca czeka po przylocie.', b: 'Zamów transfer' };
     else return '';
     return '<a class="pb pb-' + p.c + '" href="' + p.h + '" target="_blank" rel="sponsored noopener" aria-label="' + esc(p.t + ' ' + p.s) + ' (reklama, otwiera się w przeglądarce)">' +
       '<span class="pb-label">Reklama · partner</span><img class="pb-logo" src="' + p.img + '" alt="' + p.alt + '" width="' + p.w + '" height="' + p.ht + '">' +
