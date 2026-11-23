@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-11-23
+- `/pobierz` (SEO): dane OG, JSON-LD `MobileApplication` + okruszki, favicony strony (`/favicon*.png`), sekcja „Co jest w aplikacji” z linkami do tablicy lotów i nasłuchu, linki w stopce. Na stronę trafi z gałęzią `feature/seo-radar-epwr` (bez skryptu sync, kopiowane ręcznie).
+
 ## 2026-11-22
 - `/pobierz`: widoczna linijka „Wersja ekranów aplikacji … · aktualizacja …” (aktualizować przy każdej zmianie wersji w `web/app/config.js`).
 - 1.1.2: „Postaw kawę” i „Poleć aplikację” nie reagowały w aplikacji (wtyczki Browser/Share w WebView). buycoffee.to, wa.me i X otwierane przez system (jak Telegram/YouTube); „Poleć aplikację” pokazuje własne menu: WhatsApp, X, Telegram, Facebook, Inne aplikacje…, Kopiuj link.
