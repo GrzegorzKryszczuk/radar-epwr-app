@@ -548,7 +548,7 @@
   var STREAMS = [
     { key: 'tower', name: 'EPWR Tower', sub: 'wieża – starty i lądowania · 120,255', url: 'https://airband.kosma.pl/epwr_twr', c: '#FBBF24' },
     { key: 'approach', name: 'Approach #2 (Poznań)', sub: 'zbliżanie · 128,925', url: 'https://airband.kosma.pl/epwr_app2', c: '#FDE047' },
-    { key: 'delivery', name: 'EPWR Delivery', sub: 'zezwolenia przed startem · 121,805', url: 'https://airband.kosma.pl/epwr_del', c: '#CA8A04' },
+    { key: 'delivery', name: 'Wrocław Ground', sub: 'kołowanie i zezwolenia · 121,805', url: 'https://airband.kosma.pl/epwr_del', c: '#CA8A04' },
     { key: 'app1', name: 'Approach #1 (Poznań)', sub: '123,040 · gra kanał „Wszystko oprócz ATIS”', url: 'https://airband.kosma.pl/epwr_all', c: '#C4B5FD' },
     { key: 'fisn', name: 'FIS północ (Poznań)', sub: '126,300 · gra kanał „Wszystko oprócz ATIS”', url: 'https://airband.kosma.pl/epwr_all', c: '#86EFAC' },
     { key: 'fiss', name: 'FIS południe (Poznań)', sub: 'informacja · 127,250', url: 'https://airband.kosma.pl/epwr_fis_s', c: '#6EE7B7' },
