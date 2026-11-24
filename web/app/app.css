@@ -289,10 +289,10 @@ body.doc{height:auto;overflow:auto;display:block}
 body.doc main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
 body.doc h1{font-size:30px}body.doc h2{font-size:21px;margin-top:26px}body.doc p,body.doc li{color:var(--text2)}
 
-/* Baner partnerski (AirHelp przy opóźnieniu/odwołaniu, Kiwitaxi przy przylocie) – zwykły link, bez skryptów */
+/* Baner partnerski (Compensair przy opóźnieniu/odwołaniu, Kiwitaxi przy przylocie) – zwykły link, bez skryptów */
 .pb{position:relative;display:block;margin-top:14px;border-radius:12px;padding:14px 14px 12px;text-decoration:none;color:#0b1d4a;box-shadow:0 4px 16px rgba(0,0,0,.35)}
 .pb:focus-visible{outline:3px solid #ffe14d;outline-offset:2px}
-.pb-airhelp{background:linear-gradient(135deg,#fff 0%,#e4efff 100%)}
+.pb-compensair{background:linear-gradient(135deg,#fff 0%,#e1f1fa 100%)}
 .pb-kiwitaxi{background:linear-gradient(135deg,#fff8dc 0%,#ffe27a 100%)}
 .pb-label{position:absolute;top:6px;right:10px;font-size:11px;font-weight:600;color:#4a5878;opacity:.85}
 .pb-logo{display:block;height:26px;width:auto;margin:6px 0 8px}

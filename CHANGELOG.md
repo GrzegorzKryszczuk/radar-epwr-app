@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-24
+- AirHelp zastąpiony przez Compensair (oznaczone linki partnerskie w liście Loty, oknie lotu i /lot): AirHelp w Travelpayouts nie ma linku do formularza roszczenia. Link `compensair.tpk.lv/8on4alU5` (sub ID „app”) → polski formularz `compensair.com/pl/check-flight.html`. Teksty prywatności/„Postaw kawę”/pobierz zaktualizowane. Nie wymaga nowego APK.
 - `web/app/app.js`, `app.css`, `index.html` · link AirHelp od razu pod wierszem odwołanego/opóźnionego (≥ 45 min) lotu na liście Loty – bez wchodzenia w okno lotu; „Reklama · partner”, `rel="sponsored"`. Nie wymaga nowego APK.
 
 ## 2026-11-23

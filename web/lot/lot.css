@@ -13,12 +13,12 @@ body.lot .brand{color:var(--text);text-decoration:none}
   .lot-card{flex:0 0 340px}
 }
 
-/* Baner partnerski (AirHelp przy opóźnieniu/odwołaniu, Kiwitaxi przy przylocie) – zwykły link, bez skryptów */
+/* Baner partnerski (Compensair przy opóźnieniu/odwołaniu, Kiwitaxi przy przylocie) – zwykły link, bez skryptów */
 .pb-slot{margin:12px 0 4px}
 .pb-slot[hidden]{display:none}
 .pb{position:relative;display:block;border-radius:12px;padding:14px 14px 12px;text-decoration:none;color:#0b1d4a;box-shadow:0 4px 16px rgba(0,0,0,.35)}
 .pb:focus-visible{outline:3px solid #ffe14d;outline-offset:2px}
-.pb-airhelp{background:linear-gradient(135deg,#fff 0%,#e4efff 100%)}
+.pb-compensair{background:linear-gradient(135deg,#fff 0%,#e1f1fa 100%)}
 .pb-kiwitaxi{background:linear-gradient(135deg,#fff8dc 0%,#ffe27a 100%)}
 .pb-label{position:absolute;top:6px;right:10px;font-size:11px;font-weight:600;color:#4a5878;opacity:.85}
 .pb-logo{display:block;height:26px;width:auto;margin:6px 0 8px}

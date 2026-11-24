@@ -36,7 +36,7 @@ Wyślij znajomym link do lotu – otworzą go w przeglądarce, bez instalowania 
 
 Ważne: dane pochodzą z publicznych źródeł (ADS-B: adsb.lol, ODbL) i automatycznej analizy – mogą zawierać błędy. Aplikacja nie służy do nawigacji ani celów operacyjnych. Projekt niezależny, niezwiązany z Portem Lotniczym Wrocław ani PAŻP.
 
-Reklama i linki partnerskie: w oknie lotu aplikacja może pokazać oznaczony link partnerski (AirHelp – odszkodowanie za opóźniony lot, Kiwitaxi – transfer z lotniska). Jeśli z niego skorzystasz, możemy otrzymać prowizję; Ty nie płacisz więcej.
+Reklama i linki partnerskie: w oknie lotu aplikacja może pokazać oznaczony link partnerski (Compensair – odszkodowanie za opóźniony lot, Kiwitaxi – transfer z lotniska). Jeśli z niego skorzystasz, możemy otrzymać prowizję; Ty nie płacisz więcej.
 ```
 
 **Kategoria:** Podróże i informacje lokalne (alternatywa: Pogoda). **Tagi:** lotnictwo, radar, loty.
@@ -59,7 +59,7 @@ Reklama i linki partnerskie: w oknie lotu aplikacja może pokazać oznaczony lin
 - Uwaga: Firebase Messaging jest SDK Google – Google traktuje token FCM jako „Identyfikator urządzenia”. Analytics/Crashlytics: **nie używamy** (wyłączone w manifeście).
 
 ## Pozostałe formularze
-- **Reklamy:** zaznacz „Zawiera reklamy” – w oknie lotu są linki partnerskie (AirHelp, Kiwitaxi), oznaczone „Reklama · partner”.
+- **Reklamy:** zaznacz „Zawiera reklamy” – w oknie lotu są linki partnerskie (Compensair, Kiwitaxi), oznaczone „Reklama · partner”.
 - **Dostęp do aplikacji:** wszystkie funkcje dostępne bez logowania.
 - **Klasyfikacja treści (IARC):** brak przemocy/treści wrażliwych → PEGI 3 / „Dla wszystkich”.
 - **Grupa docelowa:** 13+ (nie kierowana do dzieci).

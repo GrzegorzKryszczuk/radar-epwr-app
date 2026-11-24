@@ -321,12 +321,12 @@
     });
     return recent.length ? recent : list.slice(-10);
   }
-  // AirHelp od razu pod wierszem odwołanego/opóźnionego (>= 45 min) lotu – bez wchodzenia w okno lotu.
+  // Compensair od razu pod wierszem odwołanego/opóźnionego (>= 45 min) lotu – bez wchodzenia w okno lotu.
   function boardAirhelp(f, isDep) {
     var leg = (isDep ? f.departure : f.arrival) || {};
     if (f.flight_status !== 'cancelled' && (leg.delay || 0) < 45) return '';
-    return '<a class="fl-ah" href="' + AIRHELP + '" target="_blank" rel="sponsored noopener" aria-label="AirHelp: sprawdź odszkodowanie za ten lot (reklama, otwiera się w przeglądarce)">' +
-      '<img src="/partnerzy/airhelp-logo.svg" alt="AirHelp" width="53" height="18"><span>' + (f.flight_status === 'cancelled' ? 'Lot odwołany?' : 'Lot opóźniony?') + ' Sprawdź odszkodowanie →</span><small>Reklama</small></a>';
+    return '<a class="fl-ah" href="' + COMPENSAIR + '" target="_blank" rel="sponsored noopener" aria-label="Compensair: sprawdź odszkodowanie za ten lot (reklama, otwiera się w przeglądarce)">' +
+      '<img src="/partnerzy/compensair-logo.svg" alt="Compensair" width="66" height="15"><span>' + (f.flight_status === 'cancelled' ? 'Lot odwołany?' : 'Lot opóźniony?') + ' Sprawdź odszkodowanie →</span><small>Reklama</small></a>';
   }
   function renderBoard() {
     var isDep = fl.board === 'dep', ul = $('fList');
@@ -380,14 +380,14 @@
       return hit ? hit.hex : null;
     });
   }
-  // Baner partnerski w karcie lotu (Travelpayouts, sub ID „app”): AirHelp przy odwołaniu/opóźnieniu >= 45 min, Kiwitaxi przy przylocie.
+  // Baner partnerski w karcie lotu (Travelpayouts, sub ID „app”): Compensair przy odwołaniu/opóźnieniu >= 45 min, Kiwitaxi przy przylocie.
   // Zwykły link – native.js otwiera go w karcie przeglądarki (śledzenie partnera działa w przeglądarce). Bez skryptów.
-  var AIRHELP = 'https://airhelp.tpk.lv/HYjJWtoC', KIWITAXI = 'https://kiwitaxi.tpk.lv/WQGwGVIb?u=https%3A%2F%2Fkiwitaxi.com%2Fpl';
+  var COMPENSAIR = 'https://compensair.tpk.lv/8on4alU5', KIWITAXI = 'https://kiwitaxi.tpk.lv/WQGwGVIb?u=https%3A%2F%2Fkiwitaxi.com%2Fpl';
   function partnerHtml(f, isDep) {
     var leg = (isDep ? f.departure : f.arrival) || {}, bad = f.flight_status === 'cancelled' || (leg.delay || 0) >= 45, p;
-    if (bad) p = { c: 'airhelp', h: AIRHELP, img: '/partnerzy/airhelp-logo.svg', alt: 'AirHelp', w: 78, ht: 26,
+    if (bad) p = { c: 'compensair', h: COMPENSAIR, img: '/partnerzy/compensair-logo.svg', alt: 'Compensair', w: 115, ht: 26,
       t: f.flight_status === 'cancelled' ? 'Lot odwołany?' : 'Lot opóźniony?',
-      s: 'Sprawdź, czy należy Ci się odszkodowanie do 600 € za lot w UE. Kilka minut i bez ryzyka.', b: 'Sprawdź swoje prawa' };
+      s: 'Sprawdź, czy należy Ci się odszkodowanie do 600 € za lot w UE. Kilka minut i bez ryzyka.', b: 'Sprawdź lot za darmo' };
     else if (!isDep && f.flight_status !== 'landed' && !DONE[f.flight_status]) p = { c: 'kiwitaxi', h: KIWITAXI, img: '/partnerzy/kiwitaxi-logo.svg', alt: 'Kiwitaxi', w: 30, ht: 26,
       t: 'Odbierasz kogoś z lotniska?', s: 'Zamów transfer z góry po stałej cenie. Kierowca czeka po przylocie.', b: 'Zamów transfer' };
     else return '';
