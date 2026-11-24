@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-11-24
+- `web/app/app.js`, `app.css`, `index.html` · link AirHelp od razu pod wierszem odwołanego/opóźnionego (≥ 45 min) lotu na liście Loty – bez wchodzenia w okno lotu; „Reklama · partner”, `rel="sponsored"`. Nie wymaga nowego APK.
+
 ## 2026-11-23
 - 1.1.3: kanał nasłuchu 121,805 MHz podpisany „Wrocław Ground – kołowanie i zezwolenia” zamiast „EPWR Delivery” (wg AIP AD 2.18/2.20: 121,805 to Ground; Delivery ma 124,565 MHz i wydaje zezwolenia tylko, gdy pracuje). `/pobierz`: to samo w liście funkcji, wersja 1.1.3. Nowy APK niepotrzebny.
 - `/pobierz` (SEO): dane OG, JSON-LD `MobileApplication` + okruszki, favicony strony (`/favicon*.png`), sekcja „Co jest w aplikacji” z linkami do tablicy lotów i nasłuchu, linki w stopce. Na stronę trafi z gałęzią `feature/seo-radar-epwr` (bez skryptu sync, kopiowane ręcznie).

@@ -321,6 +321,13 @@
     });
     return recent.length ? recent : list.slice(-10);
   }
+  // AirHelp od razu pod wierszem odwołanego/opóźnionego (>= 45 min) lotu – bez wchodzenia w okno lotu.
+  function boardAirhelp(f, isDep) {
+    var leg = (isDep ? f.departure : f.arrival) || {};
+    if (f.flight_status !== 'cancelled' && (leg.delay || 0) < 45) return '';
+    return '<a class="fl-ah" href="' + AIRHELP + '" target="_blank" rel="sponsored noopener" aria-label="AirHelp: sprawdź odszkodowanie za ten lot (reklama, otwiera się w przeglądarce)">' +
+      '<img src="/partnerzy/airhelp-logo.svg" alt="AirHelp" width="53" height="18"><span>' + (f.flight_status === 'cancelled' ? 'Lot odwołany?' : 'Lot opóźniony?') + ' Sprawdź odszkodowanie →</span><small>Reklama</small></a>';
+  }
   function renderBoard() {
     var isDep = fl.board === 'dep', ul = $('fList');
     document.querySelectorAll('#v-loty .seg button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.board === fl.board ? 'true' : 'false'); });
@@ -336,7 +343,7 @@
         '<span class="m"><span class="p">' + esc(cityOf(other.airport) || other.iata || '—') + '</span>' +
         '<span class="n"><span class="chip" style="background:' + chipColor(code) + '">' + esc(code) + '</span><b>' + esc(flightNr(f)) + '</b>' +
         (cs ? ' · ' + esc(cs) : '') + ((f.airline && f.airline.name) ? ' · ' + esc(f.airline.name) : '') + '</span></span>' +
-        '<span class="st ' + st[0] + '">' + esc(st[1]) + '</span></button></li>';
+        '<span class="st ' + st[0] + '">' + esc(st[1]) + '</span></button>' + boardAirhelp(f, isDep) + '</li>';
     }).join('');
     ul._list = list;
   }
